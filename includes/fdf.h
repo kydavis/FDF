@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/14 12:25:47 by kdavis           ###   ########.fr       */
+/*   Updated: 2016/12/14 17:36:57 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ typedef struct	s_canvas
 	void		*mlx;
 	void		*win;
 	void		*img;
+	int			s_x;
+	int			s_y;
 }				t_canvas;
 
 typedef struct	s_vector

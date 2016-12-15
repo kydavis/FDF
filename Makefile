@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: kdavis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2016/12/13 10:16:17 by kdavis            #+#    #+#              #
-#    Updated: 2016/12/14 16:57:45 by kdavis           ###   ########.fr        #
+#    Created: 2016/12/14 18:48:35 by kdavis            #+#    #+#              #
+#    Updated: 2016/12/14 19:16:31 by kdavis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,50 +16,41 @@ MAKE		= make
 
 FILENAMES	= main.c
 
-#LIBNAMES	= ft mlx
-#LIB		= $(addprefix $(LIBDIR), $(LIBNAMES))
+L1			= ft
+L2			= mlx
 
-INCDIR		= includes/
-LIBDIR		= lib/
-BUILDIR		= build/
 SRCDIR		= src/
-LIBFT		= $(LIBDIR)ft/
-LIBMLX		= $(LIBDIR)mlx/
-SRC			= $(addprefix $(SRCDIR), $(FILENAMES))
-BUILD		= $(addprefix $(BUILDIR), $(FILENAMES:.c=.o))
-IFLAGS		= -I $(INCDIR) -I $(LIBFT)$(INCDIR) -I $(LIBMLX)
-CFLAGS		= -Wall -Werror -Wextra $(IFLAGS) -L $(LIBDIR) -lft -lmlx
+IDIR		= includes/
+LIBDIR		= lib/
+
+SRC			=$(addprefix $(SRCDIR), $(FILENAMES))
+
+IFLAGS		=-I $(IDIR) -I $(LIBDIR)$(L1)/$(IDIR) -I $(LIBDIR)$(L2)/
+CFLAGS		= -Wall -Werror -Wextra
+LFLAGS		= -L $(LIBDIR) -l$(L1) -l$(L2)
 CC			= gcc
 
-.PHONY: all
+.PHONY: all clean fclean re
+
 all: $(NAME)
 
-.PHONY: clean
-clean:
-	rm -rf $(BUILDIR)
-	$(MAKE) -C $(LIBFT) clean
-	$(MAKE) -C $(LIBMLX) clean
-
-.PHONY: fclean
-fclean: clean
-	rm -rf $(NAME)
-	$(MAKE) -C $(LIBFT) fclean
-	$(MAKE) -C $(LIBMLX) clean
-
-.PHONY: re
-re: fclean all
-
-$(NAME): $(SRC) | $(BUILD)
-	$(CC) $(CFLAGS) $(BUILD) -o $@
-
-$(BUILDIR)%.o: $(SRCDIR)%.c | build lib
-	$(CC) $(CFLAGS) -c $^ -o $@
-
-build:
-	mkdir $(BUILDIR)
+$(NAME): | $(LIB)
+	$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) $(SRC) -o $@
 
 lib:
-	$(MAKE) -C $(LIBFT)
-	$(MAKE) -C $(LIBMLX)
-	cp $(LIBFT)/libft.a $(LIBDIR)
-	cp $(LIBFT)/libmlx.a $(LIBDIR)
+	$(MAKE) -C $(LIBDIR)$(L1)
+	$(MAKE) -C $(LIBDIR)$(L2)
+	cp -rf $(LIBDIR)$(L1)/lib$(L1).a $(LIBDIR)lib$(L1).a
+	cp -rf $(LIBDIR)$(L2)/lib$(L2).a $(LIBDIR)lib$(L2).a
+
+clean:
+	$(MAKE) -C $(LIBDIR)$(L1) clean
+	$(MAKE) -C $(LIBDIR)$(L2) clean
+
+fclean: clean
+	rm -rf $(NAME)
+	rm -rf $(LIBDIR)lib$(L1).a
+	rm -rf $(LIBDIR)lib$(L2).a
+	$(MAKE) -C $(LIBDIR)$(L1) fclean
+
+re: fclean all

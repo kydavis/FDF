@@ -6,13 +6,58 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:45:47 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/14 18:23:10 by kdavis           ###   ########.fr       */
+/*   Updated: 2016/12/22 17:24:52 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fdf.h>
 #include <libft.h>
 #include <mlx.h>
+
+/*
+** Cause I thought it looked cool
+*/
+
+static void	print_instructions()
+{
+	ft_putendl("#############################################################");
+	ft_putendl("##                                                         ##");
+	ft_putendl("##           ##########     #####        ##########        ##");
+	ft_putendl("##          ##             ##   ##      ##                 ##");
+	ft_putendl("##         #########      ##    ##     #########           ##");
+	ft_putendl("##        ##             ##   ##      ##                   ##");
+	ft_putendl("##       ##             ######       ##                    ##");
+	ft_putendl("##                                                         ##");
+	ft_putendl("#############################################################");
+	ft_putendl("\nInstructions");
+	ft_putendl("esc:\tquit program");
+	ft_putendl("'q':\trotate image direction:counterclockwise axis: x");
+	ft_putendl("'e':\trotate image direction:clockwise        axis: x");
+	ft_putendl("'w':\trotate image direction:counterclockwise axis: y");
+	ft_putendl("'s':\trotate image direction:clockwise        axis: y");
+	ft_putendl("'d':\trotate image direction:counterclockwise axis: z");
+	ft_putendl("'a':\trotate image direction:clockwise        axis: z");
+	ft_putendl("\nlak:\tshift  image direction:left");
+	ft_putendl("rak:\tshift  image direction:right");
+	ft_putendl("uak:\tshift  image direction:up");
+	ft_putendl("dak:\tshift  image direction:down");
+}
+
+
+/*
+** Place holder, may evolve into image manipulator dispatcher
+*/
+
+int	hooks(int keycode, void *param)
+{
+	t_canvas *can;
+
+	can = (t_canvas*)param;
+	ft_printf("keycode: %d\n", keycode);///
+	if (keycode == ESC)
+		fdf_cleanup(0, can);
+	return (0);
+}
 
 /*
 ** Main tasks:
@@ -28,13 +73,17 @@ int	main(int argc, char **argv)
 	if (argc == 2 || argc == 4)
 	{
 		ft_bzero((void *)&canv, sizeof(canv));
-		canv.mlx = mlx_init();
-		canv.s_x = (argc == 4 ? ft_atoi(argv[2]) : 100);
-		canv.s_y = (argc == 4 ? ft_atoi(argv[3]) : 100);
-		canv.win =  mlx_new_window(canv.mlx, canv.s_x, canv.s_y, "fdf");
+		canv.s_x = (argc == 4 ? ft_atoi(argv[2]) : 1280);
+		canv.s_y = (argc == 4 ? ft_atoi(argv[3]) : 720);
+		if (canv.s_x > 3600 || canv.s_y > 3600)
+			fdf_cleanup(-5, &canv);
+
+		fdf_initialize_draw(argv[1], &canv);
+		print_instructions();///
+		mlx_key_hook(canv.win, hooks, (void *)&canv);
+		mlx_loop(canv.mlx);
 	}
 	else
-		ft_putendl("Usage: ./fdf <filename>");
-	(void)argv[1];
+		ft_putendl("Usage: ./fdf <filename> [window width] [window length]");
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: kdavis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/14 18:48:35 by kdavis            #+#    #+#              #
-#    Updated: 2016/12/14 19:16:31 by kdavis           ###   ########.fr        #
+#    Updated: 2016/12/22 15:55:14 by kdavis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		= fdf
 
 MAKE		= make
 
-FILENAMES	= main.c
+FILENAMES	= main.c fdf_error.c fdf_initalize.c fdf_pixel.c fdf_map_reader.c
 
 L1			= ft
 L2			= mlx
@@ -24,9 +24,11 @@ IDIR		= includes/
 LIBDIR		= lib/
 
 SRC			=$(addprefix $(SRCDIR), $(FILENAMES))
+LIB1		=$(addprefix lib, $(L1))
+LIB2		=$(addprefix lib, $(L2))
 
 IFLAGS		=-I $(IDIR) -I $(LIBDIR)$(L1)/$(IDIR) -I $(LIBDIR)$(L2)/
-CFLAGS		= -Wall -Werror -Wextra
+CFLAGS		= -Wall -Werror -Wextra -framework OpenGL -framework AppKit -fsanitize=address
 LFLAGS		= -L $(LIBDIR) -l$(L1) -l$(L2)
 CC			= gcc
 
@@ -34,14 +36,16 @@ CC			= gcc
 
 all: $(NAME)
 
-$(NAME): | $(LIB)
+$(NAME): | $(LIBDIR)$(LIB1).a $(LIBDIR)$(LIB2).a
 	$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) $(SRC) -o $@
 
-lib:
+$(LIBDIR)$(LIB1).a:
 	$(MAKE) -C $(LIBDIR)$(L1)
+	cp -rf $(LIBDIR)$(L1)/$(LIB1).a $(LIBDIR)$(LIB1).a
+
+$(LIBDIR)$(LIB2).a:
 	$(MAKE) -C $(LIBDIR)$(L2)
-	cp -rf $(LIBDIR)$(L1)/lib$(L1).a $(LIBDIR)lib$(L1).a
-	cp -rf $(LIBDIR)$(L2)/lib$(L2).a $(LIBDIR)lib$(L2).a
+	cp -rf $(LIBDIR)$(L2)/$(LIB2).a $(LIBDIR)$(LIB2).a
 
 clean:
 	$(MAKE) -C $(LIBDIR)$(L1) clean
@@ -53,4 +57,11 @@ fclean: clean
 	rm -rf $(LIBDIR)lib$(L2).a
 	$(MAKE) -C $(LIBDIR)$(L1) fclean
 
+.PHONY: eclean
+eclean:
+	rm -rf $(NAME)
+
 re: fclean all
+
+.PHONY: ere
+ere: eclean all

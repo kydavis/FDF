@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:53:36 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/22 17:32:02 by kdavis           ###   ########.fr       */
+/*   Updated: 2016/12/22 18:00:28 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	fdf_cleanup(int en, t_canvas *c)
 		mlx_destroy_image(c->mlx, c->img.id);
 	if (c->win && c->mlx)
 		mlx_destroy_window(c->mlx, c->win);
-	ft_delgrid((void***)&c->map.nods);
+	ft_memdel((void *)&c->map.nods);
 	fdf_perror(en);
 	exit(en);
 }
@@ -61,9 +61,8 @@ void	fdf_cleanup(int en, t_canvas *c)
 ** before returning the ern to the parent function.
 */
 
-int		fdf_freer(int ern, void **str, void ***grid)
+int		fdf_freer(int ern, void **str)
 {
 	ft_memdel(str);
-	ft_delgrid(grid);
 	return (ern);
 }

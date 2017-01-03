@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/22 17:27:10 by kdavis           ###   ########.fr       */
+/*   Updated: 2016/12/30 17:12:58 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,9 @@
 **		read and create
 
 **	Drawing outline:
-**		Calculate z value from the number we get:
-**		Calculate initial x value from horizontal placement
-**		Calculate initial y value from vertical placement
-**		Calculate color from z value:
-**		Calculate pixel x value based on relationship of coord.
-**		Calculate pixel y value based on relationship of coord.
+**		Calculate center of the window (this point will act as an origin)
+**		Calculate y and x values of the coordinates as they relate to the origin
+**		Do matrix shit
 
 **	Error:
 **		have a garbage collection function that frees everything and closes out.
@@ -99,7 +96,7 @@
 # define RA  124
 # define UA  126
 # define DA  125
-# define EGUARD(X) (X ? 0 : fdf_cleanup(-4, c))
+# define EGUARD(X) ((X) ? 0 : fdf_cleanup(-4, c))
 
 typedef struct s_pix
 {
@@ -110,13 +107,15 @@ typedef struct s_pix
 
 typedef struct	s_node
 {
+	int			x;
+	int			y;
 	int			z;
 	int			color;
 }				t_node;
 
 typedef struct	s_map
 {
-	t_node		**nods;
+	t_node		*nods;
 	int			h;
 	int			w;
 }				t_map;
@@ -128,6 +127,8 @@ typedef struct s_image
 	int			bpp;
 	int			sl;
 	int			end;
+	int			ctr;
+	int			scale;
 }				t_image;
 
 typedef struct	s_canvas
@@ -140,19 +141,19 @@ typedef struct	s_canvas
 	int			s_y;
 }				t_canvas;
 
-
 typedef struct	s_vector
 {
 	int			x;
 	int			y;
 	int			z;
+	int			color;
 }				t_vector;
 
 /*
 ** fdf_error:
 */
 void	fdf_cleanup(int en, t_canvas *c);
-int		fdf_freer(int ern, void **str, void ***grid);
+int		fdf_freer(int ern, void **str);
 
 /*
 ** fdf_initalize

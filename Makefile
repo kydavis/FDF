@@ -6,7 +6,7 @@
 #    By: kdavis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/14 18:48:35 by kdavis            #+#    #+#              #
-#    Updated: 2016/12/22 15:55:14 by kdavis           ###   ########.fr        #
+#    Updated: 2016/12/30 17:36:01 by kdavis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME		= fdf
 MAKE		= make
 
 FILENAMES	= main.c fdf_error.c fdf_initalize.c fdf_pixel.c fdf_map_reader.c
+FILENAMES	+= test_mallocwrap.c
 
 L1			= ft
 L2			= mlx
@@ -28,7 +29,7 @@ LIB1		=$(addprefix lib, $(L1))
 LIB2		=$(addprefix lib, $(L2))
 
 IFLAGS		=-I $(IDIR) -I $(LIBDIR)$(L1)/$(IDIR) -I $(LIBDIR)$(L2)/
-CFLAGS		= -Wall -Werror -Wextra -framework OpenGL -framework AppKit -fsanitize=address
+CFLAGS		= -Wall -Werror -Wextra -framework OpenGL -framework AppKit #-fsanitize=address
 LFLAGS		= -L $(LIBDIR) -l$(L1) -l$(L2)
 CC			= gcc
 

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:45:47 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/22 17:24:52 by kdavis           ###   ########.fr       */
+/*   Updated: 2016/12/30 16:47:04 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ static void	print_instructions()
 	ft_putendl("'s':\trotate image direction:clockwise        axis: y");
 	ft_putendl("'d':\trotate image direction:counterclockwise axis: z");
 	ft_putendl("'a':\trotate image direction:clockwise        axis: z");
-	ft_putendl("\nlak:\tshift  image direction:left");
-	ft_putendl("rak:\tshift  image direction:right");
-	ft_putendl("uak:\tshift  image direction:up");
-	ft_putendl("dak:\tshift  image direction:down");
+	ft_putendl("\n < :\tshift  image direction:left");
+	ft_putendl(" > :\tshift  image direction:right");
+	ft_putendl(" ^ :\tshift  image direction:up");
+	ft_putendl(" v :\tshift  image direction:down");
 }
 
 
@@ -53,7 +53,7 @@ int	hooks(int keycode, void *param)
 	t_canvas *can;
 
 	can = (t_canvas*)param;
-	ft_printf("keycode: %d\n", keycode);///
+	ft_printf("keycode: %d char?:%c\n", keycode, keycode);///
 	if (keycode == ESC)
 		fdf_cleanup(0, can);
 	return (0);

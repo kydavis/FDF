@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/27 18:57:56 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/04 15:35:35 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,44 +17,44 @@
 #include <unistd.h>
 #include <mlx.h>
 
-static int		get_int(char **str, int *nbr)
+static int		get_value(char **str, int *nbr, float *fl)
 {
 	long long	temp;
 	int			ern;
 
 	if ((ern = ft_getll_base(str, &temp)) < 1)
 		return (ern);
-	*nbr = (int)temp;
+	if (nbr)
+		*nbr = (int)temp;
+	if (fl)
+		*fl = (float)temp;
 	return (1);
 }
 
-static int		fill_row(int fd, int w, t_node *row)
+static int		fill_row(int w, int offset, t_node *row, char *line)
 {
-	char	*head;
-	char	*tail;
 	int		i;
 	int		ern;
 
-	if ((ern = get_next_line(fd, &head)) != 1)
-		return (ern);
 	i = -1;
-	tail = head;
 	while (++i < w)
 	{
-		if ((ern = get_int(&tail, &(row + i)->z)) < 1)
-			return (fdf_freer(ern, (void*)&head));
-		if (*tail == ',')
+		(row + i)->x = i;
+		(row + i)->y = offset / w;
+		if ((ern = get_value(&line, NULL, &(row + i)->z)) < 1)
+			return (ern);
+		if (*line == ',')
 		{
-			tail++;
-			if ((ern = get_int(&tail, &(row + i)->color)) < 1)
-				return (fdf_freer(ern, (void*)&head));
+			line++;
+			if ((ern = get_value(&line, &(row + i)->color, NULL)) < 1)
+				return (ern);
 		}
 		else
 			(row + i)->color = (row + i)->z;
-		while (!(ft_iswhitespace(*tail)) && *tail)
-			tail += 1;
+		while (!(ft_iswhitespace(*line)) && *line)
+			line += 1;
 	}
-	return (fdf_freer(ern, (void*)&head));
+	return (ern);
 }
 
 /*
@@ -66,6 +66,7 @@ static int		fill_row(int fd, int w, t_node *row)
 static t_node	*fill_map(int fd, int h, int w)
 {
 	t_node	*map;
+	char	*line;
 	int		area;
 	int		i;
 
@@ -75,7 +76,14 @@ static t_node	*fill_map(int fd, int h, int w)
 		return (NULL);
 	while (i < area)
 	{
-		fill_row(fd, w, (map + i));
+		if ((get_next_line(fd, &line)) <= 0 || 
+				(fill_row(w, i, (map + i), line)) < 1)
+		{
+			ft_memdel((void*)&map);
+			ft_memdel((void*)&line);
+			return (NULL);
+		}
+		ft_memdel((void*)&line);
 		i += w;
 	}
 	return (map);
@@ -95,7 +103,7 @@ static int		get_map_dimensions(char *file, int *h, int *w)
 
 	if ((fd = open(file, O_RDONLY)) == -1)
 		return (-1);
-	while ((ern = get_next_line(fd, &row)) == 1)
+	while ((ern = get_next_line(fd, &row)) > 0)
 	{
 		tempw = ft_strfcount(row, &ft_iswhitespace);
 		if (*h == 0)

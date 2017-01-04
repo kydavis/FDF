@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/03 14:46:44 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/04 15:35:54 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	draw_line(t_canvas *c, t_vector *start, t_vector *end)
 }*/
 
 
-/*	ft_printmap(&c->map);///
+#include <stdio.h>///
 static void		ft_printmap(t_map *map)
 {
 	int	x;
@@ -61,11 +61,11 @@ static void		ft_printmap(t_map *map)
 	{
 		x = 0;
 		while (x < map->w)
-			ft_printf("%3d ",map->nods[(y * map->w) + x++].z);
-		ft_printf("\n");
+			printf("%5.1f ",map->nods[(y * map->w) + x++].z);
+		printf("\n");
 		y++;
 	}
-}*/
+}
 
 /*
 void	initalize_matrix(t_canvas *c)
@@ -99,6 +99,7 @@ void	fdf_initialize_draw(char *file, t_canvas *c)
 	EGUARD((c->img.id = mlx_new_image(c->mlx, c->s_x, c->s_y)));
 	c->img.skt = mlx_get_data_addr
 		(c->img.id, &c->img.bpp, &c->img.sl, &c->img.end);
+	ft_printmap(&c->map);///
 /*
 	EGUARD(initalize_matrix(c));
 	fdf_draw_image(c, 0, 0);

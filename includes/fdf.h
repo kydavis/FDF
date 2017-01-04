@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/30 17:12:58 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/03 14:44:52 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@
 ** Library included for use of the uint32_t typedef
 */
 # include <stdint.h>
+# include <math.h>
 
 # define ESC  53
 # define Q  12
@@ -97,6 +98,8 @@
 # define UA  126
 # define DA  125
 # define EGUARD(X) ((X) ? 0 : fdf_cleanup(-4, c))
+# define SIN(X) c->sintable[ft_absolute((int)X&255)]
+# define COS(X) c->costable[ft_absolute((int)X&255)]
 
 typedef struct s_pix
 {
@@ -135,6 +138,8 @@ typedef struct	s_canvas
 {
 	void		*mlx;
 	void		*win;
+	float		*sintable;
+	float		*costable;
 	t_image		img;
 	t_map		map;
 	int			s_x;
@@ -148,6 +153,12 @@ typedef struct	s_vector
 	int			z;
 	int			color;
 }				t_vector;
+
+/*
+** fdf_sinlookup.c
+*/
+
+float	*fdf_sin_cos_init(float **cs);
 
 /*
 ** fdf_error:

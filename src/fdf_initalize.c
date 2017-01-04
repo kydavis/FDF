@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/30 17:50:39 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/03 14:46:44 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,6 @@ static void		ft_printmap(t_map *map)
 		y++;
 	}
 }*/
-
-/*
-** Calculate_img_offset calculates the appropriate distance between nodes to
-** ensure that the map fits within the image, as well as the offset of the start
-** of the map compared to the start of the image.
-*/
-
-void	calculate_img_offset(t_canvas *c)
-{
-	c->img.ctr = (c->s_y / 2) * c->img.sl + c->img.sl / 2;
-}
 
 /*
 void	initalize_matrix(t_canvas *c)

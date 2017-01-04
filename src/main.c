@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:45:47 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/30 16:47:04 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/03 14:46:06 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	main(int argc, char **argv)
 	if (argc == 2 || argc == 4)
 	{
 		ft_bzero((void *)&canv, sizeof(canv));
+		if (!(canv.sintable = fdf_sin_cos_init(&canv.costable)))
+			fdf_cleanup(-4, &canv);
 		canv.s_x = (argc == 4 ? ft_atoi(argv[2]) : 1280);
 		canv.s_y = (argc == 4 ? ft_atoi(argv[3]) : 720);
 		if (canv.s_x > 3600 || canv.s_y > 3600)

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:53:36 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/22 18:00:28 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/03 14:47:38 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ void	fdf_cleanup(int en, t_canvas *c)
 		mlx_destroy_image(c->mlx, c->img.id);
 	if (c->win && c->mlx)
 		mlx_destroy_window(c->mlx, c->win);
-	ft_memdel((void *)&c->map.nods);
+	ft_memdel((void*)&c->map.nods);
+	ft_memdel((void*)&c->sintable);
+	ft_memdel((void*)&c->costable);
 	fdf_perror(en);
 	exit(en);
 }

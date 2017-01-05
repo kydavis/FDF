@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 17:02:08 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/04 17:10:35 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int		fill_row(int w, int lnbr, t_node *row, char *line)
 	while (++i < w)
 	{
 		(row + i)->x = i - (w / 2);
-		(row + i)->y = lnbr;;
+		(row + i)->y = lnbr;
 		if ((ern = get_value(&line, NULL, &(row + i)->z)) < 1)
 			return (ern);
 		if (*line == ',')

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 15:33:21 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/04 17:42:14 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ typedef struct	s_canvas
 	float		*costable;
 	t_image		img;
 	t_map		map;
+	float		matmod[16];
 	int			s_x;
 	int			s_y;
 }				t_canvas;

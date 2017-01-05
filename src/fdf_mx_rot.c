@@ -6,12 +6,36 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 14:48:55 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 16:45:44 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/04 17:45:39 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fdf.h>
 #include <libft.h>
+
+/*
+** fdf_mxsquare_mult multiplies two dim X dim matrices m1, m2, and ret must all
+** be arrays of size (dim ^ 2)
+*/
+
+void	fdf_mxsquare_mult(float *m1, float *m2, float *ret, int dim)
+{
+	int		i;
+	int		j;
+	int		var;
+
+	i = -1;
+	while (++i < dim)
+	{
+		j = -1;
+		while (++j < dim)
+		{
+			var = -1;
+			while (++var < dim)
+				ret[(i * dim) + j] += m1[i * dim + var] * m2[var * dim + j];
+		}
+	}
+}
 
 /*
 ** fdf_mx_id fills a float[16] array with a 4x4 identiy matrix.
@@ -80,8 +104,8 @@ void	fdf_mx_rot(int ax, int ay, int az, t_canvas *c)
 	fdf_mx_id(rotx);
 	rotx[5] = COS(ax);
 	rotx[6] = SIN(ax);
-	rotx[9] = -rot[6];
-	rotx[10] = rot[5];
+	rotx[9] = -rotx[6];
+	rotx[10] = rotx[5];
 	fdf_mx_id(roty);
 	roty[0] = COS(ay);
 	roty[8] = SIN(ay);
@@ -92,8 +116,8 @@ void	fdf_mx_rot(int ax, int ay, int az, t_canvas *c)
 	rotz[1] = SIN(az);
 	rotz[4] = -rotz[1];
 	rotz[5] = rotz[0];
-	c->gm * rotx = temp1;
-	temp1 * roty = temp2;
-	temp2 * rotz = c->gm;
+	fdf_mxsquare_mult(c->matmod, roty, temp1, 4);
+	fdf_mxsquare_mult(temp1, rotx, temp2, 4);
+	fdf_mxsquare_mult(temp2, rotz, c->matmod, 4);
 }
 

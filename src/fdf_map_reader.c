@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 15:35:35 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/04 17:02:08 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int		get_value(char **str, int *nbr, float *fl)
 	return (1);
 }
 
-static int		fill_row(int w, int offset, t_node *row, char *line)
+static int		fill_row(int w, int lnbr, t_node *row, char *line)
 {
 	int		i;
 	int		ern;
@@ -39,8 +39,8 @@ static int		fill_row(int w, int offset, t_node *row, char *line)
 	i = -1;
 	while (++i < w)
 	{
-		(row + i)->x = i;
-		(row + i)->y = offset / w;
+		(row + i)->x = i - (w / 2);
+		(row + i)->y = lnbr;;
 		if ((ern = get_value(&line, NULL, &(row + i)->z)) < 1)
 			return (ern);
 		if (*line == ',')
@@ -69,6 +69,7 @@ static t_node	*fill_map(int fd, int h, int w)
 	char	*line;
 	int		area;
 	int		i;
+	int		ln;
 
 	i = 0;
 	area = w * h;
@@ -76,8 +77,9 @@ static t_node	*fill_map(int fd, int h, int w)
 		return (NULL);
 	while (i < area)
 	{
+		ln = (i / w) - (h / 2);
 		if ((get_next_line(fd, &line)) <= 0 || 
-				(fill_row(w, i, (map + i), line)) < 1)
+				(fill_row(w, ln, (map + i), line)) < 1)
 		{
 			ft_memdel((void*)&map);
 			ft_memdel((void*)&line);

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 15:35:54 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/04 17:05:26 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,11 @@ static void		ft_printmap(t_map *map)
 	y = 0;
 	while (y < map->h)
 	{
-		x = 0;
-		while (x < map->w)
-			printf("%5.1f ",map->nods[(y * map->w) + x++].z);
+		x = -1;
+		while (++x < map->w)
+			printf("%5.1f,%-5.1f",
+					map->nods[(y * map->w) + x].x,
+					map->nods[(y * map->w) + x].y);
 		printf("\n");
 		y++;
 	}

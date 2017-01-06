@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 19:20:26 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 19:28:45 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ void	fdf_initialize_modifier(t_mods *mods)
 	mods->trans[0] = 0;
 	mods->trans[1] = 0;
 	mods->trans[2] = 0;
-	mods->rotx = 0;
-	mods->roty = 0;
-	mods->rotz = 0;
-	mods->focal = 200;
+	mods->rotx = 256 / 3;
+	mods->roty = 256 / 3;
+	mods->rotz = 256 / 3;;
+	mods->focal = 100;
 }
 
 void	fdf_initialize_draw(char *file, t_canvas *c)

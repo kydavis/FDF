@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 16:01:08 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 16:35:38 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,6 @@ int				get_data(char *file, t_canvas *c)
 		fdf_cleanup(-4, c);
 	if ((close(fd)) == -1)
 		fdf_cleanup(-7, c);
+	c->img.ctr = (c->s_x / 2) + (c->img.sl / 4) * c->s_y / 2;
 	return (1);
 }

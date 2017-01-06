@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 12:44:59 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 16:25:18 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,7 @@ void	fdf_initialize_draw(char *file, t_canvas *c)
 	EGUARD((c->img.id = mlx_new_image(c->mlx, c->s_x, c->s_y)));
 	c->img.skt = mlx_get_data_addr
 		(c->img.id, &c->img.bpp, &c->img.sl, &c->img.end);
-/*
-	EGUARD(initalize_matrix(c));
-	fdf_draw_image(c, 0, 0);
-	draw_line(c);
-*/
+
 	EGUARD((c->win = mlx_new_window(c->mlx, c->s_x, c->s_y, "fdf")));
 	mlx_put_image_to_window(c->mlx, c->win, c->img.id, 10, 0);
 }

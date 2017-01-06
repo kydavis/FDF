@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 16:21:54 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:07:59 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,9 @@
 # define RA  124
 # define UA  126
 # define DA  125
+
+# define FOCAL 200
+
 # define EGUARD(X) ((X) ? 0 : fdf_cleanup(-4, c))
 # define SIN(X) c->sintable[ft_absolute((int)X&255)]
 # define COS(X) c->costable[ft_absolute((int)X&255)]
@@ -134,7 +137,7 @@ typedef struct	s_vector
 typedef struct	s_map
 {
 	t_node		*loc;
-	t_vect		*aln;
+	t_pixel		*twd;
 	int			h;
 	int			w;
 }				t_map;
@@ -170,10 +173,10 @@ float	*fdf_sin_cos_init(float **cs);
 /*
 ** fdf_matrix.c
 */
-void		fdf_mx_rot(int ax, int ay, int az, t_canvas *c);
-void		fdf_mx_scale_tr(float *fa, int len, float *ret, char flag);
-void		fdf_vector_mult(t_node *vec, t_canvas *c, t_vect *ret, int ind);
-void		fdf_mx_id(float *mat);
+void			fdf_mx_rot(int ax, int ay, int az, t_canvas *c);
+void			fdf_mx_scale_tr(float *fa, int len, float *ret, char flag);
+void			fdf_vec_tranf(t_node *vec, t_canvas *c, t_pixel *twd, int ind);
+void			fdf_mx_id(float *mat);
 
 /*
 ** fdf_transform.c

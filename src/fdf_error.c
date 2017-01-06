@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:53:36 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 15:59:25 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:08:19 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	fdf_cleanup(int en, t_canvas *c)
 	if (c->win && c->mlx)
 		mlx_destroy_window(c->mlx, c->win);
 	ft_memdel((void*)&c->map.loc);
-	ft_memdel((void*)&c->map.aln);
+	ft_memdel((void*)&c->map.twd);
 	ft_memdel((void*)&c->sintable);
 	ft_memdel((void*)&c->costable);
 	fdf_perror(en);

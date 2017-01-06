@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 16:35:38 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:01:27 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int				get_data(char *file, t_canvas *c)
 		fdf_cleanup(-1, c);
 	if (!(c->map.loc = fill_map(fd, c->map.h, c->map.w)))
 		fdf_cleanup(-4, c);
-	if (!(c->map.aln = (t_vect*)ft_memalloc(sizeof(t_vect) * c->map.h * c->map.w)))
+	if (!(c->map.twd = (t_pixel*)ft_memalloc(sizeof(t_pixel) * c->map.h * c->map.w)))
 		fdf_cleanup(-4, c);
 	if ((close(fd)) == -1)
 		fdf_cleanup(-7, c);

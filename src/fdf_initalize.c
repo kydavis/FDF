@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 16:25:18 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 18:40:46 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 **		z						formula
 */
 
-/*#include <stdio.h>///
+#include <stdio.h>///
 static void		ft_printmap(t_map *map)
 {
 	int	x;
@@ -41,13 +41,31 @@ static void		ft_printmap(t_map *map)
 	{
 		x = -1;
 		while (++x < map->w)
-			printf("%5.1f,%-5.1f",
-					map->nods[(y * map->w) + x].x,
-					map->nods[(y * map->w) + x].y);
+			printf("%5.1d,%-5.1d ",
+					map->twd[(y * map->w) + x].x,
+					map->twd[(y * map->w) + x].y);
 		printf("\n");
 		y++;
 	}
-}*/
+}
+
+/*
+** fdf_initialize_modifier initializes the modifiers for the transformation
+** matrix for the initial image.
+*/
+
+void	fdf_initialize_modifier(t_mods *mods)
+{
+	mods->scale[0] = 100;
+	mods->scale[1] = 100;
+	mods->scale[2] = 100;
+	mods->trans[0] = 0;
+	mods->trans[1] = 0;
+	mods->trans[2] = 0;
+	mods->rotx = 0;
+	mods->roty = 0;
+	mods->rotz = 0;
+}
 
 void	fdf_initialize_draw(char *file, t_canvas *c)
 {
@@ -56,6 +74,9 @@ void	fdf_initialize_draw(char *file, t_canvas *c)
 	EGUARD((c->img.id = mlx_new_image(c->mlx, c->s_x, c->s_y)));
 	c->img.skt = mlx_get_data_addr
 		(c->img.id, &c->img.bpp, &c->img.sl, &c->img.end);
+	fdf_initialize_modifier(&c->mods);
+	fdf_modify_coordinates(c);
+	ft_printmap(&c->map);///
 
 	EGUARD((c->win = mlx_new_window(c->mlx, c->s_x, c->s_y, "fdf")));
 	mlx_put_image_to_window(c->mlx, c->win, c->img.id, 10, 0);

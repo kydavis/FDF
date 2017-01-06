@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 12:40:29 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 16:06:36 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:07:54 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** flag != 0: modifier matrix for world->aligned.
 */
 
-void	fdf_mod_matrix(t_canvas *c, char flag)
+static void	fdf_mod_matrix(t_canvas *c, char flag)
 {
 	fdf_mx_id(c->mods.mmat);
 	if (!(flag))
@@ -49,6 +49,8 @@ int		fdf_modify_coordinates(t_canvas *c)
 	area = c->map.h * c->map.w;
 	fdf_mod_matrix(c, 0);
 	while (++i < area)
-		fdf_vector_mult((c->map.loc + i), c, (c->map.aln + i), i);
+	{
+		fdf_vec_tranf((c->map.loc + i), c, (c->map.twd + i), i);
+	}
 	return (1);
 }

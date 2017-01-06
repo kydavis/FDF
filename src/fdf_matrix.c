@@ -6,18 +6,17 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 14:48:55 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 20:19:52 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/06 11:18:41 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fdf.h>
 #include <libft.h>
-#include <stdio.h>///
 
 /*
 ** Print matrix is a temporary debugging function
 */
-
+#include <stdio.h>///
 void	print_matrix(float *ret)
 {
 	int	i;

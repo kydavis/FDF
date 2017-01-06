@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 18:40:46 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 19:20:26 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void		ft_printmap(t_map *map)
 	{
 		x = -1;
 		while (++x < map->w)
-			printf("%5.1d,%-5.1d ",
+			printf("%10.1d,%-10.1d",
 					map->twd[(y * map->w) + x].x,
 					map->twd[(y * map->w) + x].y);
 		printf("\n");
@@ -56,15 +56,16 @@ static void		ft_printmap(t_map *map)
 
 void	fdf_initialize_modifier(t_mods *mods)
 {
-	mods->scale[0] = 100;
-	mods->scale[1] = 100;
-	mods->scale[2] = 100;
+	mods->scale[0] = 10;
+	mods->scale[1] = 10;
+	mods->scale[2] = 10;
 	mods->trans[0] = 0;
 	mods->trans[1] = 0;
 	mods->trans[2] = 0;
 	mods->rotx = 0;
 	mods->roty = 0;
 	mods->rotz = 0;
+	mods->focal = 200;
 }
 
 void	fdf_initialize_draw(char *file, t_canvas *c)

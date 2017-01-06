@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 17:07:59 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 19:20:44 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@
 # define UA  126
 # define DA  125
 
-# define FOCAL 200
-
 # define EGUARD(X) ((X) ? 0 : fdf_cleanup(-4, c))
 # define SIN(X) c->sintable[ft_absolute((int)X&255)]
 # define COS(X) c->costable[ft_absolute((int)X&255)]
@@ -112,6 +110,7 @@ typedef struct s_modifier
 	int			rotx;
 	int			roty;
 	int			rotz;
+	int			focal;
 }				t_mods;
 
 typedef struct	s_pix

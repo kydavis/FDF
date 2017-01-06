@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 17:42:14 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 16:01:36 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,17 @@
 # define SIN(X) c->sintable[ft_absolute((int)X&255)]
 # define COS(X) c->costable[ft_absolute((int)X&255)]
 
-typedef struct s_pix
+typedef struct s_modifier
+{
+	float		mmat[16];
+	float		scale[3];
+	float		trans[3];
+	int			rotx;
+	int			roty;
+	int			rotz;
+}				t_mods;
+
+typedef struct	s_pix
 {
 	int			x;
 	int			y;
@@ -110,15 +120,21 @@ typedef struct s_pix
 
 typedef struct	s_node
 {
-	float		x;
-	float		y;
-	float		z;
+	int			z;
 	int			color;
 }				t_node;
 
+typedef struct	s_vector
+{
+	float		x;
+	float		y;
+	float		z;
+}				t_vect;
+
 typedef struct	s_map
 {
-	t_node		*nods;
+	t_node		*loc;
+	t_vect		*aln;
 	int			h;
 	int			w;
 }				t_map;
@@ -130,8 +146,6 @@ typedef struct s_image
 	int			bpp;
 	int			sl;
 	int			end;
-	int			ctr;
-	int			scale;
 }				t_image;
 
 typedef struct	s_canvas
@@ -140,9 +154,9 @@ typedef struct	s_canvas
 	void		*win;
 	float		*sintable;
 	float		*costable;
+	t_mods		mods;
 	t_image		img;
 	t_map		map;
-	float		matmod[16];
 	int			s_x;
 	int			s_y;
 }				t_canvas;
@@ -150,8 +164,15 @@ typedef struct	s_canvas
 /*
 ** fdf_sinlookup.c
 */
-
 float	*fdf_sin_cos_init(float **cs);
+
+/*
+** fdf_matrix.c
+*/
+void		fdf_mx_rot(int ax, int ay, int az, t_canvas *c);
+void		fdf_mx_scale_tr(float *fa, int len, float *ret, char flag);
+void		fdf_vector_mult(t_node *vec, t_canvas *c, t_vect *ret, int ind);
+void		fdf_mx_id(float *mat);
 
 /*
 ** fdf_error:

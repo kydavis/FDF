@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 17:10:35 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 16:01:08 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <unistd.h>
 #include <mlx.h>
 
-static int		get_value(char **str, int *nbr, float *fl)
+static int		get_value(char **str, int *nbr)
 {
 	long long	temp;
 	int			ern;
@@ -26,12 +26,10 @@ static int		get_value(char **str, int *nbr, float *fl)
 		return (ern);
 	if (nbr)
 		*nbr = (int)temp;
-	if (fl)
-		*fl = (float)temp;
 	return (1);
 }
 
-static int		fill_row(int w, int lnbr, t_node *row, char *line)
+static int		fill_row(int w, t_node *row, char *line)
 {
 	int		i;
 	int		ern;
@@ -39,14 +37,12 @@ static int		fill_row(int w, int lnbr, t_node *row, char *line)
 	i = -1;
 	while (++i < w)
 	{
-		(row + i)->x = i - (w / 2);
-		(row + i)->y = lnbr;
-		if ((ern = get_value(&line, NULL, &(row + i)->z)) < 1)
+		if ((ern = get_value(&line, &(row + i)->z)) < 1)
 			return (ern);
 		if (*line == ',')
 		{
 			line++;
-			if ((ern = get_value(&line, &(row + i)->color, NULL)) < 1)
+			if ((ern = get_value(&line, &(row + i)->color)) < 1)
 				return (ern);
 		}
 		else
@@ -69,17 +65,15 @@ static t_node	*fill_map(int fd, int h, int w)
 	char	*line;
 	int		area;
 	int		i;
-	int		ln;
 
 	i = 0;
-	area = w * h;
+	area = h * w;
 	if (!(map = (t_node *)ft_memalloc(sizeof(t_node) * area)))
 		return (NULL);
 	while (i < area)
 	{
-		ln = (i / w) - (h / 2);
-		if ((get_next_line(fd, &line)) <= 0 || 
-				(fill_row(w, ln, (map + i), line)) < 1)
+		if ((get_next_line(fd, &line)) <= 0 ||
+				(fill_row(w, (map + i), line)) < 1)
 		{
 			ft_memdel((void*)&map);
 			ft_memdel((void*)&line);
@@ -129,7 +123,9 @@ int				get_data(char *file, t_canvas *c)
 		fdf_cleanup(ern, c);
 	if ((fd = open(file, O_RDONLY)) == -1)
 		fdf_cleanup(-1, c);
-	if (!(c->map.nods = fill_map(fd, c->map.h, c->map.w)))
+	if (!(c->map.loc = fill_map(fd, c->map.h, c->map.w)))
+		fdf_cleanup(-4, c);
+	if (!(c->map.aln = (t_vect*)ft_memalloc(sizeof(t_vect) * c->map.h * c->map.w)))
 		fdf_cleanup(-4, c);
 	if ((close(fd)) == -1)
 		fdf_cleanup(-7, c);

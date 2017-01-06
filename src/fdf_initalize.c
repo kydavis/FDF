@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 17:05:26 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 12:44:59 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,6 @@
 */
 
 /*
-** Prototype function for drawing a line to an image and putting that image 
-** to a window
-*/
-/*
-void	draw_line(t_canvas *c, t_vector *start, t_vector *end)
-{
-	t_pixel	p;
-}
-*/
-
-
-/*
 ** Take array of nodes, and image sketch. (change the z elevation point to the
 ** sketch coordinate of each node.)
 ** z = (formula to calculate the sketch address, would use)
@@ -42,15 +30,7 @@ void	draw_line(t_canvas *c, t_vector *start, t_vector *end)
 **		z						formula
 */
 
-/*void	fdf_draw_image(t_canvas *c, int x, int y)
-{
-	t_vector start;
-	t_vector right;
-	t_vector bottom;
-}*/
-
-
-#include <stdio.h>///
+/*#include <stdio.h>///
 static void		ft_printmap(t_map *map)
 {
 	int	x;
@@ -67,32 +47,7 @@ static void		ft_printmap(t_map *map)
 		printf("\n");
 		y++;
 	}
-}
-
-/*
-void	initalize_matrix(t_canvas *c)
-{
-	int		x;
-	int		y;
-	int		i;
-
-	calculate_img_offset(c);
-	y = 0;
-	while (y < c->map.h)
-	{
-		x = 0;
-		while (x < c->map.w)
-		{
-			index = y * c->map.w + x;
-			c->map.nods[index].x = x * c->img.scale;
-			c->map.nods[index].y = y * c->img.scale;
-			c->map.nods[index].z *= c->img.scale;
-			x++;
-		}
-		y++;
-	}
-}
-*/
+}*/
 
 void	fdf_initialize_draw(char *file, t_canvas *c)
 {
@@ -101,7 +56,6 @@ void	fdf_initialize_draw(char *file, t_canvas *c)
 	EGUARD((c->img.id = mlx_new_image(c->mlx, c->s_x, c->s_y)));
 	c->img.skt = mlx_get_data_addr
 		(c->img.id, &c->img.bpp, &c->img.sl, &c->img.end);
-	ft_printmap(&c->map);///
 /*
 	EGUARD(initalize_matrix(c));
 	fdf_draw_image(c, 0, 0);

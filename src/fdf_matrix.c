@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 14:48:55 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 17:45:39 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/05 16:02:40 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** be arrays of size (dim ^ 2)
 */
 
-void	fdf_mxsquare_mult(float *m1, float *m2, float *ret, int dim)
+static void	fdf_mxsquare_mult(float *m1, float *m2, float *ret, int dim)
 {
 	int		i;
 	int		j;
@@ -38,6 +38,30 @@ void	fdf_mxsquare_mult(float *m1, float *m2, float *ret, int dim)
 }
 
 /*
+** fdf_vector_mult creates the vector ret by retreiving the local coordinates
+** of the node from the value stored at vec as well as the index of the value.
+*/
+
+void		fdf_vector_mult(t_node *vec, t_canvas *c, t_vect *ret, int ind)
+{
+	float	x;
+	float	y;
+	float	z;
+	int		map_size;
+
+	map_size = c->map.h * c->map.w;
+	x = ind % map_size - (c->map.w / 2);
+	y = ind / map_size - (c->map.h / 2);
+	z = vec->z;
+	ret->x = x * c->mods.mmat[0] + y * c->mods.mmat[4] +
+				z * c->mods.mmat[8] + 1 * c->mods.mmat[12];
+	ret->y = x * c->mods.mmat[1] + y * c->mods.mmat[5] +
+				z * c->mods.mmat[9] + 1 * c->mods.mmat[13];
+	ret->z = x * c->mods.mmat[2] + y * c->mods.mmat[6] +
+				z * c->mods.mmat[10] + 1 * c->mods.mmat[14];
+}
+
+/*
 ** fdf_mx_id fills a float[16] array with a 4x4 identiy matrix.
 **
 ** identity matrix:
@@ -47,7 +71,7 @@ void	fdf_mxsquare_mult(float *m1, float *m2, float *ret, int dim)
 **	0	0	0	1
 */
 
-void	fdf_mx_id(float *mat)
+void		fdf_mx_id(float *mat)
 {
 	mat[0] = 1;
 	mat[1] = 0;
@@ -68,11 +92,43 @@ void	fdf_mx_id(float *mat)
 }
 
 /*
+** fdf_mx_scale_tr will either scale or translate the matrix ret by the
+** values in the float array.
+** flag == 0: translate matrix && modifier == the index of the final row.
+** flag != 0: scale matrix && modifier == value diag index is divisible by.
+*/
+
+void		fdf_mx_scale_tr(float *fa, int len, float *ret, char flag)
+{
+	float	modm[16];
+	float	temp[16];
+	int		modifier;
+	int		i;
+
+	fdf_mx_id(modm);
+	modifier = (flag ? len + 2 : len * (len + 1));
+	i = -1;
+	if (flag)
+		while (++i < len)
+			modm[modifier * i] = fa[i];
+	else
+		while (++i < len)
+			modm[modifier + i] = fa[i];
+	fdf_mxsquare_mult(ret, modm, temp, 4);
+	i = -1;
+	while (++i < 16)
+		ret[i] = temp[i];
+}
+
+/*
 ** fdf_mx_rot creates a rotation matrix for rotating the image around the the
 ** different axises by the perspective degrees.
 ** (degrees are in terms of 256 degrees for a full circle)
 ** It does this by creating rotation matrices for each axis, and multiplying the
 ** matrix by these matrices.
+**
+** ret must be a 4x4 matrix for this function to work.
+** (in other words a float[16])
 **
 ** rotation matrix x:
 **	1	0	0	0
@@ -93,7 +149,7 @@ void	fdf_mx_id(float *mat)
 **	0	0	0	1
 */
 
-void	fdf_mx_rot(int ax, int ay, int az, t_canvas *c)
+void		fdf_mx_rot(int ax, int ay, int az, t_canvas *c)
 {
 	float	rotx[16];
 	float	roty[16];
@@ -116,8 +172,7 @@ void	fdf_mx_rot(int ax, int ay, int az, t_canvas *c)
 	rotz[1] = SIN(az);
 	rotz[4] = -rotz[1];
 	rotz[5] = rotz[0];
-	fdf_mxsquare_mult(c->matmod, roty, temp1, 4);
+	fdf_mxsquare_mult(c->mods.mmat, roty, temp1, 4);
 	fdf_mxsquare_mult(temp1, rotx, temp2, 4);
-	fdf_mxsquare_mult(temp2, rotz, c->matmod, 4);
+	fdf_mxsquare_mult(temp2, rotz, c->mods.mmat, 4);
 }
-

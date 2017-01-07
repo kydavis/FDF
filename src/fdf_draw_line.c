@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 11:19:57 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/06 20:04:58 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/06 20:54:58 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,18 @@ static void	fdf_get_color(t_pixel *cp, t_pixel *start, t_pixel *end)
 
 static void	fdf_plot_point(t_canvas *c, t_pixel *cp, t_pixel *sp, t_pixel *ep)
 {
-	fdf_get_color(cp, sp, ep);
+	t_pixel	print_pix;
+
+	print_pix.x = cp->x;
+	print_pix.y = cp->y;
+	fdf_get_color(&print_pix, sp, ep);
 	if (c->octant > 2 && c->octant < 7)
-		cp->x = -cp->x;
+		print_pix.x = -cp->x;
 	if (c->octant == 2 || c->octant > 3)
-		cp->y = -cp->y;
+		print_pix.y = -cp->y;
 	if (c->octant == 1 || c->octant == 2 || c->octant == 5 || c->octant == 6)
-		ft_xorswapi(&cp->x, &cp->y);
-	pixel_to_img(c, cp);
+		ft_xorswapi(&print_pix.x, &print_pix.y);
+	pixel_to_img(c, &print_pix);
 }
 
 /*
@@ -88,9 +92,9 @@ static void		fdf_bress_line(t_pixel *start, t_pixel *end, t_canvas *c)
 	error = 2 * (delta_y - delta_x);
 	while (pix.x < end->x)
 	{
-		ft_printf("\nstart: (%d, %d) end: (%d, %d)", start->x, start->y, end->x,
+/*		ft_printf("\nstart: (%d, %d) end: (%d, %d)", start->x, start->y, end->x,
 				end->y);///
-		ft_printf("\ncoordinates (x,y) (%d, %d)", pix.x, pix.y);
+		ft_printf("\ncoordinates (x,y) (%d, %d)", pix.x, pix.y);*/
 		fdf_plot_point(c, &pix, start, end);
 		if (error > 0)
 		{
@@ -110,8 +114,8 @@ static void	fdf_octant_switch(int oct, t_pixel *cp)
 {
 	int	temp;
 
-	ft_printf("\nfdf_octant_switch\n");///
-	ft_printf("octant:%d before: cp->x: %d, cp->y:%d\n",oct, cp->x, cp->y);///
+/*	ft_printf("\nfdf_octant_switch\n");///
+	ft_printf("octant:%d before: cp->x: %d, cp->y:%d\n",oct, cp->x, cp->y);*/
 	if (oct > 1 && oct < 6)
 		cp->x = -cp->x;
 	if (oct > 3)
@@ -122,7 +126,7 @@ static void	fdf_octant_switch(int oct, t_pixel *cp)
 		cp->x = cp->y;
 		cp->y = temp;
 	}
-	ft_printf("after: cp->x: %d, cp->y:%d\n",cp->x, cp->y);///
+/*	ft_printf("after: cp->x: %d, cp->y:%d\n",cp->x, cp->y);*/
 }
 
 /*
@@ -133,14 +137,14 @@ static void	fdf_octant_switch(int oct, t_pixel *cp)
 ** dcord[1] = change in y coordinate between pixels
 */
 
-void		fdf_draw_line(t_pixel *p1, t_pixel *p2, t_canvas *c)
+void		fdf_draw_line(t_pixel p1, t_pixel p2, t_canvas *c)
 {
 	int		dcord[2];
 	float	angle;
 	int		quad;
 
-	dcord[0] = p2->x - p1->x;
-	dcord[1] = p2->y - p1->y;
+	dcord[0] = p2.x - p1.x;
+	dcord[1] = p2.y - p1.y;
 	angle = asin(dcord[1]);
 	if (dcord[1] >= 0)
 		quad = (dcord[0] >= 0 ? 0 : 1);
@@ -154,7 +158,7 @@ void		fdf_draw_line(t_pixel *p1, t_pixel *p2, t_canvas *c)
 		c->octant = (angle >= -M_PI_4 ? 4 : 5);
 	else if (quad == 3)
 		c->octant = (angle >= -M_PI_4 ? 7 : 6);
-	fdf_octant_switch(c->octant, p1);
-	fdf_octant_switch(c->octant, p2);
-	fdf_bress_line(p1, p2, c);
+	fdf_octant_switch(c->octant, &p1);
+	fdf_octant_switch(c->octant, &p2);
+	fdf_bress_line(&p1, &p2, c);
 }

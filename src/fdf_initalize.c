@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/06 20:22:21 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/06 20:57:12 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 **		w * y					(sl * y)
 **		z						formula
 */
-
+/*
 #include <stdio.h>///
 static void		ft_printmap(t_map *map)
 {
@@ -47,7 +47,7 @@ static void		ft_printmap(t_map *map)
 		printf("\n");
 		y++;
 	}
-}
+}*/
 
 /*
 ** fdf_draw_map draws the map based on the current coordinate load
@@ -64,13 +64,13 @@ int		fdf_draw_map(t_canvas *c)
 	{
 		if ((i + 1) % c->map.w != 0)
 		{
-			ft_printf("\nfrom:%d to %d\n", i, i + 1);
-			fdf_draw_line(&c->map.twd[i], &c->map.twd[i + 1], c);
+/*			ft_printf("\nfrom:%d to %d\n", i, i + 1);*/
+			fdf_draw_line(c->map.twd[i], c->map.twd[i + 1], c);
 		}
 		if ((i + c->map.w) / area == 0)
 		{
-			ft_printf("\nfrom:%d to %d\n", i, i + c->map.w);
-			fdf_draw_line(&c->map.twd[i], &c->map.twd[i + c->map.w], c);
+/*			ft_printf("\nfrom:%d to %d\n", i, i + c->map.w);*/
+			fdf_draw_line(c->map.twd[i], c->map.twd[i + c->map.w], c);
 		}
 		i++;
 	}
@@ -105,7 +105,7 @@ void	fdf_initialize_draw(char *file, t_canvas *c)
 		(c->img.id, &c->img.bpp, &c->img.sl, &c->img.end);
 	fdf_initialize_modifier(&c->mods);
 	fdf_modify_coordinates(c);
-	ft_printmap(&c->map);///
+/*	ft_printmap(&c->map);*/
 	fdf_draw_map(c);
 
 	EGUARD((c->win = mlx_new_window(c->mlx, c->s_x, c->s_y, "fdf")));

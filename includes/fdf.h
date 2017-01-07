@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 19:20:44 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/06 19:27:32 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ typedef struct	s_canvas
 	t_mods		mods;
 	t_image		img;
 	t_map		map;
+	int			octant;
 	int			s_x;
 	int			s_y;
 }				t_canvas;
@@ -202,5 +203,10 @@ int		pixel_to_img(t_canvas *c, t_pixel *p);
 ** map_reader.c
 */
 int			get_data(char *file, t_canvas *c);
+
+/*
+** fdf_draw_line.c
+*/
+void		fdf_draw_line(t_pixel *p1, t_pixel *p2, t_canvas *c);
 
 #endif

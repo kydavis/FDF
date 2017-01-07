@@ -6,11 +6,12 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 11:19:57 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/06 15:37:05 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/06 20:04:58 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fdf.h>
+#include <libft.h>
 #include <math.h>
 
 /*
@@ -19,12 +20,33 @@
 
 static void	fdf_get_color(t_pixel *cp, t_pixel *start, t_pixel *end)
 {
-	float	dx;
-	float	dy;
-	float	elevation;
+	double	color;
+	float	tdx;
+	float	sdx;
+	float	edx;
 
-	dx = end->x - start->x;
-	dy = end->y - start->y;
+	tdx = end->x - start->x;
+	sdx = cp->x - start->x;
+	edx = end->x - cp->x;
+	color = (sdx / tdx) * (float)end->color + (edx / tdx) * (float)start->color;
+	cp->color = (int)color;
+}
+
+/*
+** fdf_plot_pixel switches the output to appropriate octant and retrieves
+** the color the pixel is supposed to display.
+*/
+
+static void	fdf_plot_point(t_canvas *c, t_pixel *cp, t_pixel *sp, t_pixel *ep)
+{
+	fdf_get_color(cp, sp, ep);
+	if (c->octant > 2 && c->octant < 7)
+		cp->x = -cp->x;
+	if (c->octant == 2 || c->octant > 3)
+		cp->y = -cp->y;
+	if (c->octant == 1 || c->octant == 2 || c->octant == 5 || c->octant == 6)
+		ft_xorswapi(&cp->x, &cp->y);
+	pixel_to_img(c, cp);
 }
 
 /*
@@ -52,7 +74,7 @@ static void	fdf_get_color(t_pixel *cp, t_pixel *start, t_pixel *end)
 ** determining when to move along the vertical axis.
 */
 
-void		fdf_draw_line(t_pixel *start, t_pixel *end, t_canvas *c)
+static void		fdf_bress_line(t_pixel *start, t_pixel *end, t_canvas *c)
 {
 	int		delta_y;
 	int		delta_x;
@@ -60,48 +82,79 @@ void		fdf_draw_line(t_pixel *start, t_pixel *end, t_canvas *c)
 	t_pixel	pix;
 
 	pix.y = start->y;
-	pix.x = start->x - 1;
+	pix.x = start->x;
 	delta_x = end->x - start->x;
 	delta_y = end->y - start->y;
 	error = 2 * (delta_y - delta_x);
-	while (++pix.x < end->x)
+	while (pix.x < end->x)
 	{
-		pix.color = start->color;
-		pixel_to_img(c, pix);
+		ft_printf("\nstart: (%d, %d) end: (%d, %d)", start->x, start->y, end->x,
+				end->y);///
+		ft_printf("\ncoordinates (x,y) (%d, %d)", pix.x, pix.y);
+		fdf_plot_point(c, &pix, start, end);
 		if (error > 0)
 		{
 			pix.y++;
 			error -= delta_x;
 		}
-		error +=delta_y;
+		error += delta_y;
+		pix.x++;
 	}
 }
 
 /*
-** fdf_switch_octants is used to establish which coordinate is the starting
-** coordinate and which one is the ending coordinate based on.
+** fdf_octant_switch adjusts the input coordinates for the Bresenham algorithm
 */
 
-void	fdf_switch_octants(int octant, t_pixel *p1, t_pixel *p2, t_canvas *c)
+static void	fdf_octant_switch(int oct, t_pixel *cp)
 {
-	t_pixel	ip1;
-	t_pixel	ip2;
+	int	temp;
 
-	ip1.x = p1->y;
-	ip1.y = p1->x;
-	ip1.color = p1->color;
-	ip2.x = p2->y;
-	ip2.y = p2->x;
-	ip2.color = p2->color;
-	if (octant == 0)
-		fdf_draw_line(p1, p2, c);
-	else if (octant == 1)
-		fdf_draw_line(ip1, ip2, c);
-	else if (octant == 2)
-	else if (octant == 3)
-	else if (octant == 4)
-		fdf_draw_line(p2, p1, c);
-	else if (octant == 5)
-	else if (octant == 6)
-	else if (octant == 7)
+	ft_printf("\nfdf_octant_switch\n");///
+	ft_printf("octant:%d before: cp->x: %d, cp->y:%d\n",oct, cp->x, cp->y);///
+	if (oct > 1 && oct < 6)
+		cp->x = -cp->x;
+	if (oct > 3)
+		cp->y = -cp->y;
+	if (oct == 1 || oct == 2 || oct == 5 || oct == 6)
+	{
+		temp = cp->x;
+		cp->x = cp->y;
+		cp->y = temp;
+	}
+	ft_printf("after: cp->x: %d, cp->y:%d\n",cp->x, cp->y);///
+}
+
+/*
+** fdf_switch_octant calculates what octant the pixels should be in and adjusts
+** the coordinates appropriatley.
+** The higher values of oct indicate
+** dcord[0] = change in x coordinate between pixels
+** dcord[1] = change in y coordinate between pixels
+*/
+
+void		fdf_draw_line(t_pixel *p1, t_pixel *p2, t_canvas *c)
+{
+	int		dcord[2];
+	float	angle;
+	int		quad;
+
+	dcord[0] = p2->x - p1->x;
+	dcord[1] = p2->y - p1->y;
+	angle = asin(dcord[1]);
+	if (dcord[1] >= 0)
+		quad = (dcord[0] >= 0 ? 0 : 1);
+	else
+		quad = (dcord[0] >= 0 ? 2 : 3);
+	if (quad == 0)
+		c->octant = (angle <= M_PI_4 ? 0 : 1);
+	else if (quad == 1)
+		c->octant = (angle <= M_PI_4 ? 2 : 3);
+	else if (quad == 2)
+		c->octant = (angle >= -M_PI_4 ? 4 : 5);
+	else if (quad == 3)
+		c->octant = (angle >= -M_PI_4 ? 7 : 6);
+	fdf_octant_switch(c->octant, p1);
+	fdf_octant_switch(c->octant, p2);
+	fdf_bress_line(p1, p2, c);
 }

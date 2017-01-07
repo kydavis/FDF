@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 17:01:27 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/06 19:34:28 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int		fill_row(int w, t_node *row, char *line)
 				return (ern);
 		}
 		else
-			(row + i)->color = (row + i)->z;
+			(row + i)->color = 0xfffafa;
 		while (!(ft_iswhitespace(*line)) && *line)
 			line += 1;
 	}

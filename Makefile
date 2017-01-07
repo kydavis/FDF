@@ -6,7 +6,7 @@
 #    By: kdavis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/14 18:48:35 by kdavis            #+#    #+#              #
-#    Updated: 2017/01/05 17:19:54 by kdavis           ###   ########.fr        #
+#    Updated: 2017/01/06 18:29:53 by kdavis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ NAME		= fdf
 MAKE		= make
 
 FILENAMES	= main.c fdf_error.c fdf_initalize.c fdf_pixel.c fdf_map_reader.c
-FILENAMES	+=fdf_sinlookup.c fdf_matrix.c fdf_transform.c #test_mallocwrap.c
+FILENAMES	+=fdf_sinlookup.c fdf_matrix.c fdf_transform.c fdf_draw_line.c
+FILENAMES	+=#test_mallocwrap.c
 
 L1			= ft
 L2			= mlx

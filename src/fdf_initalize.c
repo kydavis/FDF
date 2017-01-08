@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/06 20:57:12 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/07 14:48:46 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 **		w * y					(sl * y)
 **		z						formula
 */
-/*
+
 #include <stdio.h>///
 static void		ft_printmap(t_map *map)
 {
@@ -47,7 +47,7 @@ static void		ft_printmap(t_map *map)
 		printf("\n");
 		y++;
 	}
-}*/
+}
 
 /*
 ** fdf_draw_map draws the map based on the current coordinate load
@@ -84,30 +84,31 @@ int		fdf_draw_map(t_canvas *c)
 
 void	fdf_initialize_modifier(t_mods *mods)
 {
-	mods->scale[0] = 1;
-	mods->scale[1] = 1;
-	mods->scale[2] = 1;
+	mods->scale[0] = 0.125;
+	mods->scale[1] = 0.125;
+	mods->scale[2] = 0.125;
 	mods->trans[0] = 0;
 	mods->trans[1] = 0;
 	mods->trans[2] = 0;
 	mods->rotx = 0;
 	mods->roty = 0;
-	mods->rotz = 0;
+	mods->rotz = 128;
 	mods->focal = 100;
+	mods->color = 0xffff;
 }
 
 void	fdf_initialize_draw(char *file, t_canvas *c)
 {
+	fdf_initialize_modifier(&c->mods);
 	EGUARD(get_data(file, c));
 	c->mlx = mlx_init();
 	EGUARD((c->img.id = mlx_new_image(c->mlx, c->s_x, c->s_y)));
 	c->img.skt = mlx_get_data_addr
 		(c->img.id, &c->img.bpp, &c->img.sl, &c->img.end);
-	fdf_initialize_modifier(&c->mods);
 	fdf_modify_coordinates(c);
-/*	ft_printmap(&c->map);*/
+	ft_printmap(&c->map);
 	fdf_draw_map(c);
 
 	EGUARD((c->win = mlx_new_window(c->mlx, c->s_x, c->s_y, "fdf")));
-	mlx_put_image_to_window(c->mlx, c->win, c->img.id, 10, 0);
+	mlx_put_image_to_window(c->mlx, c->win, c->img.id, 0, 0);
 }

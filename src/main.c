@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:45:47 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/03 14:46:06 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/08 15:01:27 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,30 @@ static void	print_instructions()
 ** Place holder, may evolve into image manipulator dispatcher
 */
 
-int	hooks(int keycode, void *param)
+static int	hooks(int kc, void *param)
 {
-	t_canvas *can;
+	t_canvas	*can;
+	int			i;	
 
+	i = ~0;
 	can = (t_canvas*)param;
-	ft_printf("keycode: %d char?:%c\n", keycode, keycode);///
-	if (keycode == ESC)
+	ft_printf("kc: %d char?:%c\n", kc, kc);
+	if (kc == ESC)
 		fdf_cleanup(0, can);
+	if (kc == Q || kc == E || kc == W || kc == S || kc == D || kc == A || kc == N6
+			|| kc == N5 || kc == N4 || kc == N7 || kc == N8 || kc == N9)
+		fdf_rotate(&can->mods, kc);
+/*	if (kc == W || kc == S)
+		can->mods.roty += (kc == W ? 1 : -1);
+	if (kc == D || kc == A)
+		can->mods.rotz += (kc == A ? 1 : -1);*/
+	if (kc == PS || kc == MS)
+		fdf_zoom(can->mods.scale, kc);
+	fdf_modify_coordinates(can);
+	ft_bzero(can->img.skt, (can->s_x * can->s_y) * 4);
+	fdf_draw_map(can);
+	mlx_clear_window(can->mlx, can->win);
+	mlx_put_image_to_window(can->mlx, can->win, can->img.id, 0, 0);
 	return (0);
 }
 

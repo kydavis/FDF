@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/06 19:34:28 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/07 12:31:28 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int		get_value(char **str, int *nbr)
 	return (1);
 }
 
-static int		fill_row(int w, t_node *row, char *line)
+static int		fill_row(int w, t_node *row, char *line, int color)
 {
 	int		i;
 	int		ern;
@@ -46,7 +46,7 @@ static int		fill_row(int w, t_node *row, char *line)
 				return (ern);
 		}
 		else
-			(row + i)->color = 0xfffafa;
+			(row + i)->color = color * (row + i)->z;
 		while (!(ft_iswhitespace(*line)) && *line)
 			line += 1;
 	}
@@ -59,7 +59,7 @@ static int		fill_row(int w, t_node *row, char *line)
 ** then the color will be specified based on the height of the node.)
 */
 
-static t_node	*fill_map(int fd, int h, int w)
+static t_node	*fill_map(int fd, int h, int w, int color)
 {
 	t_node	*map;
 	char	*line;
@@ -73,7 +73,7 @@ static t_node	*fill_map(int fd, int h, int w)
 	while (i < area)
 	{
 		if ((get_next_line(fd, &line)) <= 0 ||
-				(fill_row(w, (map + i), line)) < 1)
+				(fill_row(w, (map + i), line, color)) < 1)
 		{
 			ft_memdel((void*)&map);
 			ft_memdel((void*)&line);
@@ -123,7 +123,7 @@ int				get_data(char *file, t_canvas *c)
 		fdf_cleanup(ern, c);
 	if ((fd = open(file, O_RDONLY)) == -1)
 		fdf_cleanup(-1, c);
-	if (!(c->map.loc = fill_map(fd, c->map.h, c->map.w)))
+	if (!(c->map.loc = fill_map(fd, c->map.h, c->map.w, c->mods.color)))
 		fdf_cleanup(-4, c);
 	if (!(c->map.twd = (t_pixel*)ft_memalloc(sizeof(t_pixel) * c->map.h * c->map.w)))
 		fdf_cleanup(-4, c);

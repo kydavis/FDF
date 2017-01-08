@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/06 20:44:50 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/07 15:09:24 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,14 @@
 # define RA  124
 # define UA  126
 # define DA  125
+# define PS	126
+# define MS 125
+# define N6 88
+# define N4 86
+# define N5 87
+# define N7 89
+# define N9 92
+# define N8 91
 
 # define EGUARD(X) ((X) ? 0 : fdf_cleanup(-4, c))
 # define SIN(X) c->sintable[ft_absolute((int)X&255)]
@@ -110,6 +118,7 @@ typedef struct s_modifier
 	int			rotx;
 	int			roty;
 	int			rotz;
+	int			color;
 	int			focal;
 }				t_mods;
 
@@ -192,6 +201,7 @@ int		fdf_freer(int ern, void **str);
 /*
 ** fdf_initalize
 */
+int		fdf_draw_map(t_canvas *c);
 void	fdf_initialize_draw(char *file, t_canvas *canv);
 
 /*
@@ -208,5 +218,11 @@ int			get_data(char *file, t_canvas *c);
 ** fdf_draw_line.c
 */
 void		fdf_draw_line(t_pixel p1, t_pixel p2, t_canvas *c);
+
+/*
+** fdf_key_hooks.c
+*/
+void	fdf_zoom(float *scale, int keycode);
+void	fdf_rotate(t_mods *mods, int keycode);
 
 #endif

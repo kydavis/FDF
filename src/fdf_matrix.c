@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 14:48:55 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/06 20:56:15 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/07 14:07:59 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ void		fdf_vec_tranf(t_node *vec, t_canvas *c, t_pixel *twd, int ind)
 				lv.z * c->mods.mmat[8] + 1 * c->mods.mmat[12];
 	tv.y = lv.x * c->mods.mmat[1] + lv.y * c->mods.mmat[5] +
 				lv.z * c->mods.mmat[9] + 1 * c->mods.mmat[13];
-	if (!(tv.z = lv.x * c->mods.mmat[2] + lv.y * c->mods.mmat[6] +
-				lv.z * c->mods.mmat[10] + 1 * c->mods.mmat[14]))
-		tv.z = 1;
-	twd->x = c->mods.focal * tv.x / tv.z;
-	twd->y = c->mods.focal * tv.y / tv.z;
+	tv.z = lv.x * c->mods.mmat[2] + lv.y * c->mods.mmat[6] +
+				lv.z * c->mods.mmat[10] + 1 * c->mods.mmat[14];
+	tv.z = (tv.z < 1.0 && tv.z > -1.0 ? 1 : tv.z);
+	twd->x = c->mods.focal * tv.x / tv.z + (c->map.w / 2);
+	twd->y = c->mods.focal * tv.y / tv.z + ind / c->map.w;
 
 /*	printf("\nfdf_vec_tranf\n");///
 	printf("tv.x:%f tv.y:%f tv.z:%f \n",tv.x, tv.y, tv.z);

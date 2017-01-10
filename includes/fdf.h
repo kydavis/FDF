@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/07 15:09:24 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 11:49:49 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,21 +94,27 @@
 # define D  2
 # define A  0
 # define LA 123
-# define RA  124
-# define UA  126
-# define DA  125
-# define PS	126
-# define MS 125
+# define RA 124
+# define UA 126
+# define DA 125
+# define PS	69
+# define MS 78
+# define N1 83
+# define N2 84
+# define N3 85
 # define N6 88
 # define N4 86
 # define N5 87
 # define N7 89
 # define N9 92
 # define N8 91
+# define RSHIFT 258
+# define LSHIFT 257
 
 # define EGUARD(X) ((X) ? 0 : fdf_cleanup(-4, c))
 # define SIN(X) c->sintable[ft_absolute((int)X&255)]
 # define COS(X) c->costable[ft_absolute((int)X&255)]
+
 
 typedef struct s_modifier
 {
@@ -118,9 +124,16 @@ typedef struct s_modifier
 	int			rotx;
 	int			roty;
 	int			rotz;
-	int			color;
-	int			focal;
 }				t_mods;
+
+typedef struct	s_model
+{
+	t_mods		obj;
+	t_mods		cam;
+	int			shifth;
+	int			shiftv;
+	int			focal;
+}				t_model;
 
 typedef struct	s_pix
 {
@@ -148,6 +161,7 @@ typedef struct	s_map
 	t_pixel		*twd;
 	int			h;
 	int			w;
+	int			bcolor;
 }				t_map;
 
 typedef struct s_image
@@ -166,7 +180,7 @@ typedef struct	s_canvas
 	void		*win;
 	float		*sintable;
 	float		*costable;
-	t_mods		mods;
+	t_model		model;
 	t_image		img;
 	t_map		map;
 	int			octant;
@@ -182,7 +196,7 @@ float	*fdf_sin_cos_init(float **cs);
 /*
 ** fdf_matrix.c
 */
-void			fdf_mx_rot(int ax, int ay, int az, t_canvas *c);
+void			fdf_mx_rot(t_canvas *c, t_mods *mod);
 void			fdf_mx_scale_tr(float *fa, int len, float *ret, char flag);
 void			fdf_vec_tranf(t_node *vec, t_canvas *c, t_pixel *twd, int ind);
 void			fdf_mx_id(float *mat);
@@ -222,7 +236,7 @@ void		fdf_draw_line(t_pixel p1, t_pixel p2, t_canvas *c);
 /*
 ** fdf_key_hooks.c
 */
-void	fdf_zoom(float *scale, int keycode);
+void	fdf_zoom(float *scl, int keycode, int w, int h);
 void	fdf_rotate(t_mods *mods, int keycode);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/07 14:48:46 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 11:55:22 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,25 +82,33 @@ int		fdf_draw_map(t_canvas *c)
 ** matrix for the initial image.
 */
 
-void	fdf_initialize_modifier(t_mods *mods)
+void	fdf_initialize_modifier(t_canvas *c)
 {
-	mods->scale[0] = 0.125;
-	mods->scale[1] = 0.125;
-	mods->scale[2] = 0.125;
-	mods->trans[0] = 0;
-	mods->trans[1] = 0;
-	mods->trans[2] = 0;
-	mods->rotx = 0;
-	mods->roty = 0;
-	mods->rotz = 128;
-	mods->focal = 100;
-	mods->color = 0xffff;
+	c->model.obj.scale[0] = 0.015625;
+	c->model.obj.scale[1] = 0.015625;
+	c->model.obj.scale[2] = 0.015625;
+	c->model.obj.trans[0] = 0;
+	c->model.obj.trans[1] = 0;
+	c->model.obj.trans[2] = 0;
+	c->model.obj.rotx = 0;
+	c->model.obj.roty = 0;
+	c->model.obj.rotz = 0;
+	c->model.cam.trans[0] = 0;
+	c->model.cam.trans[1] = 0;
+	c->model.cam.trans[2] = 0;
+	c->model.cam.rotx = 0;
+	c->model.cam.roty = 0;
+	c->model.cam.rotz = 0;
+	c->model.focal = 2400;
+	c->model.shifth = 0;
+	c->model.shiftv = 0;
 }
 
 void	fdf_initialize_draw(char *file, t_canvas *c)
 {
-	fdf_initialize_modifier(&c->mods);
+	c->map.bcolor = 0xffff;
 	EGUARD(get_data(file, c));
+	fdf_initialize_modifier(c);
 	c->mlx = mlx_init();
 	EGUARD((c->img.id = mlx_new_image(c->mlx, c->s_x, c->s_y)));
 	c->img.skt = mlx_get_data_addr

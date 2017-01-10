@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 14:48:55 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/07 14:07:59 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 11:48:46 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,23 +80,23 @@ void		fdf_vec_tranf(t_node *vec, t_canvas *c, t_pixel *twd, int ind)
 	lv.x = ind % c->map.w - (c->map.w / 2);
 	lv.y = (c->map.h / 2) - ind / c->map.w;
 	lv.z = vec->z;
-	tv.x = lv.x * c->mods.mmat[0] + lv.y * c->mods.mmat[4] +
-				lv.z * c->mods.mmat[8] + 1 * c->mods.mmat[12];
-	tv.y = lv.x * c->mods.mmat[1] + lv.y * c->mods.mmat[5] +
-				lv.z * c->mods.mmat[9] + 1 * c->mods.mmat[13];
-	tv.z = lv.x * c->mods.mmat[2] + lv.y * c->mods.mmat[6] +
-				lv.z * c->mods.mmat[10] + 1 * c->mods.mmat[14];
-	tv.z = (tv.z < 1.0 && tv.z > -1.0 ? 1 : tv.z);
-	twd->x = c->mods.focal * tv.x / tv.z + (c->map.w / 2);
-	twd->y = c->mods.focal * tv.y / tv.z + ind / c->map.w;
+	tv.x = lv.x * c->model.obj.mmat[0] + lv.y * c->model.obj.mmat[4] +
+				lv.z * c->model.obj.mmat[8] + 1 * c->model.obj.mmat[12];
+	tv.y = lv.x * c->model.obj.mmat[1] + lv.y * c->model.obj.mmat[5] +
+				lv.z * c->model.obj.mmat[9] + 1 * c->model.obj.mmat[13];
+	tv.z = lv.x * c->model.obj.mmat[2] + lv.y * c->model.obj.mmat[6] +
+				lv.z * c->model.obj.mmat[10] + 1 * c->model.obj.mmat[14];
+	tv.z = (tv.z < 1 && tv.z > -1 ? 1 : tv.z);
+	twd->x = c->model.focal * tv.x / tv.z + (c->s_x / 2) + c->model.shifth;
+	twd->y = -1 * c->model.focal * tv.y / tv.z + (c->s_y / 2) + c->model.shiftv;
 
 /*	printf("\nfdf_vec_tranf\n");///
 	printf("tv.x:%f tv.y:%f tv.z:%f \n",tv.x, tv.y, tv.z);
 	printf("lv.x:%f lv.y:%f lv.z:%f \n",lv.x, lv.y, lv.z);
 	printf("Transformation matrix:\n");
-	print_matrix(c->mods.mmat);///
-	printf("twd->x:%d float:%f\n",twd->x, c->mods.focal * tv.x / tv.z);///
-	printf("twd->y:%d float:%f\n",twd->y, c->mods.focal * tv.y / tv.z);*/
+	print_matrix(c->model.obj.mmat);///
+	printf("twd->x:%d float:%f\n",twd->x, c->model.obj.focal * tv.x / tv.z);///
+	printf("twd->y:%d float:%f\n",twd->y, c->model.obj.focal * tv.y / tv.z);*/
 	twd->color = vec->color;
 }
 
@@ -199,7 +199,7 @@ void		fdf_mx_scale_tr(float *fa, int len, float *ret, char flag)
 **	0	0	0	1
 */
 
-void		fdf_mx_rot(int ax, int ay, int az, t_canvas *c)
+void		fdf_mx_rot(t_canvas *c, t_mods *mod)
 {
 	float	rotx[16];
 	float	roty[16];
@@ -209,28 +209,28 @@ void		fdf_mx_rot(int ax, int ay, int az, t_canvas *c)
 
 /*	printf("\nfdf_mx_rot\n");///
 	printf("Transformation matrix: Before %s\n", "rotation");///
-	print_matrix(c->mods.mmat);*/
+	print_matrix(c->obj.mmat);*/
 
 	fdf_mx_id(rotx);
-	rotx[5] = COS(ax);
-	rotx[6] = SIN(ax);
+	rotx[5] = COS(mod->rotx);
+	rotx[6] = SIN(mod->rotx);
 	rotx[9] = -rotx[6];
 	rotx[10] = rotx[5];
 	fdf_mx_id(roty);
-	roty[0] = COS(ay);
-	roty[8] = SIN(ay);
+	roty[0] = COS(mod->roty);
+	roty[8] = SIN(mod->roty);
 	roty[2] = -roty[8];
 	roty[10] = roty[0];
 	fdf_mx_id(rotz);
-	rotz[0] = COS(az);
-	rotz[1] = SIN(az);
+	rotz[0] = COS(mod->rotz);
+	rotz[1] = SIN(mod->rotz);
 	rotz[4] = -rotz[1];
 	rotz[5] = rotz[0];
-	fdf_mxsquare_mult(c->mods.mmat, roty, temp1, 4);
+	fdf_mxsquare_mult(mod->mmat, roty, temp1, 4);
 	fdf_mxsquare_mult(temp1, rotx, temp2, 4);
-	fdf_mxsquare_mult(temp2, rotz, c->mods.mmat, 4);
+	fdf_mxsquare_mult(temp2, rotz, mod->mmat, 4);
 
 /*	printf("\nfdf_mx_rot\n");///
 	printf("Transformation matrix: After %s\n", "rotation");///
-	print_matrix(c->mods.mmat);*/
+	print_matrix(c->obj.mmat);*/
 }

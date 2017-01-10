@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 12:40:29 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 19:45:19 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 11:55:14 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@
 
 static void	fdf_mod_matrix(t_canvas *c, char flag)
 {
-	fdf_mx_id(c->mods.mmat);
+	fdf_mx_id(c->model.obj.mmat);
 	if (!(flag))
 	{
-		fdf_mx_scale_tr(c->mods.scale, 3, c->mods.mmat, 1);
-		fdf_mx_rot(c->mods.rotx, c->mods.roty, c->mods.rotz, c);
-		fdf_mx_scale_tr(c->mods.trans, 3, c->mods.mmat, 0);
+		fdf_mx_scale_tr(c->model.obj.scale, 3, c->model.obj.mmat, 1);
+		fdf_mx_rot(c, &c->model.obj);
+		fdf_mx_scale_tr(c->model.obj.trans, 3, c->model.obj.mmat, 0);
 	}
 	else
 	{
-		fdf_mx_scale_tr(c->mods.trans, 3, c->mods.mmat, 0);
-		fdf_mx_rot(c->mods.rotx, c->mods.roty, c->mods.rotz, c);
+		fdf_mx_scale_tr(c->model.cam.trans, 3, c->model.cam.mmat, 0);
+		fdf_mx_rot(c, &c->model.cam);
 	}
 }
 
@@ -49,8 +49,7 @@ int		fdf_modify_coordinates(t_canvas *c)
 	area = c->map.h * c->map.w;
 	fdf_mod_matrix(c, 0);
 	while (++i < area)
-	{
 		fdf_vec_tranf((c->map.loc + i), c, (c->map.twd + i), i);
-	}
+/*	fdf_mod_matrix(c, 1);*/
 	return (1);
 }

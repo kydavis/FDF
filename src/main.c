@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:45:47 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/08 15:01:27 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 11:49:25 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,21 @@ static int	hooks(int kc, void *param)
 	i = ~0;
 	can = (t_canvas*)param;
 	ft_printf("kc: %d char?:%c\n", kc, kc);
+	fdf_rotate(&can->model.obj, kc);
 	if (kc == ESC)
 		fdf_cleanup(0, can);
-	if (kc == Q || kc == E || kc == W || kc == S || kc == D || kc == A || kc == N6
-			|| kc == N5 || kc == N4 || kc == N7 || kc == N8 || kc == N9)
-		fdf_rotate(&can->mods, kc);
-/*	if (kc == W || kc == S)
-		can->mods.roty += (kc == W ? 1 : -1);
-	if (kc == D || kc == A)
-		can->mods.rotz += (kc == A ? 1 : -1);*/
+	if (kc == UA || kc == DA)
+		can->model.shiftv += (kc == UA ? can->s_y / 20 : -can->s_y / 20);
+	if (kc == LA || kc == RA)
+		can->model.shifth += (kc == RA ? can->s_x / 20 : -can->s_x / 20);
+	if (kc == RSHIFT || kc == LSHIFT)
+		can->map.bcolor += 0xF;
+/*	if (kc == UA || kc == DA)
+		can->obj.trans[0] += (kc == UA ? 1 : -1);
+	if (kc == LA || kc == RA)
+		can->obj.trans[1] += (kc == RA ? 1 : -1);*/
 	if (kc == PS || kc == MS)
-		fdf_zoom(can->mods.scale, kc);
+		fdf_zoom(can->model.obj.scale, kc, can->map.w, can->map.h);
 	fdf_modify_coordinates(can);
 	ft_bzero(can->img.skt, (can->s_x * can->s_y) * 4);
 	fdf_draw_map(can);

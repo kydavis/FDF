@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/07 12:31:28 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 11:55:12 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ static int		fill_row(int w, t_node *row, char *line, int color)
 				return (ern);
 		}
 		else
-			(row + i)->color = color * (row + i)->z;
+			if(!((row + i)->color = color * (row + i)->z))
+				(row + i)->color = color * 0xFFF;
 		while (!(ft_iswhitespace(*line)) && *line)
 			line += 1;
 	}
@@ -123,12 +124,11 @@ int				get_data(char *file, t_canvas *c)
 		fdf_cleanup(ern, c);
 	if ((fd = open(file, O_RDONLY)) == -1)
 		fdf_cleanup(-1, c);
-	if (!(c->map.loc = fill_map(fd, c->map.h, c->map.w, c->mods.color)))
+	if (!(c->map.loc = fill_map(fd, c->map.h, c->map.w, c->map.bcolor)))
 		fdf_cleanup(-4, c);
 	if (!(c->map.twd = (t_pixel*)ft_memalloc(sizeof(t_pixel) * c->map.h * c->map.w)))
 		fdf_cleanup(-4, c);
 	if ((close(fd)) == -1)
 		fdf_cleanup(-7, c);
-	c->img.ctr = (c->s_x / 2) + (c->img.sl / 4) * c->s_y / 2;
 	return (1);
 }

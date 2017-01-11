@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 14:48:55 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 13:34:36 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 15:07:03 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void		fdf_vec_tranf(t_node *vec, t_canvas *c, t_pixel *twd, int ind)
 	tv.z = (tv.z < .125 && tv.z > -.125 ? 1 : tv.z);*/
 	twd->x = c->model.focal * tv.x + (c->s_x / 2) + c->model.shifth;
 	twd->y = -1 * c->model.focal * tv.y + (c->s_y / 2) + c->model.shiftv;
-	twd->color = vec->color + (c->map.cf ? c->map.bcolor : 0);
+	twd->color = vec->color + (c->map.cf ? 0 : c->map.bcolor);
 /*	printf("\nfdf_vec_tranf\n");///
 	printf("tv.x:%f tv.y:%f tv.z:%f \n",tv.x, tv.y, tv.z);*/
 /*	printf("lv.x:%f lv.y:%f lv.z:%f \n",lv.x, lv.y, lv.z);

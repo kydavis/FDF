@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 13:55:57 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 14:59:57 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 #include <mlx.h>
 #include <fcntl.h>
 #include <math.h>
-
-/*
-** fdf_initalize_draw starts the process for drawing the image.
-*/
 
 /*
 ** Take array of nodes, and image sketch. (change the z elevation point to the
@@ -100,7 +96,15 @@ void	fdf_initialize_modifier(t_canvas *c)
 
 void	fdf_initialize_draw(char *file, t_canvas *c)
 {
+	int	winscale;
+
 	EGUARD(get_data(file, c));
+	winscale = (c->s_x > 100 ? 5 : 50);
+	c->s_x = (c->s_x ? c->s_x : c->map.w * winscale);
+	winscale = (c->s_y > 100 ? 5 : 50);
+	c->s_y = (c->s_y ? c->s_y : c->map.h * winscale);
+	c->s_y = (c->s_y < 1764 ? c->s_y : 1764);
+	c->s_x = (c->s_x < 3200 ? c->s_x : 3200);
 	fdf_initialize_modifier(c);
 	c->mlx = mlx_init();
 	EGUARD((c->img.id = mlx_new_image(c->mlx, c->s_x, c->s_y)));
@@ -109,7 +113,6 @@ void	fdf_initialize_draw(char *file, t_canvas *c)
 	fdf_modify_coordinates(c);
 	ft_printmap(&c->map);
 	fdf_draw_map(c);
-
 	EGUARD((c->win = mlx_new_window(c->mlx, c->s_x, c->s_y, "fdf")));
 	mlx_put_image_to_window(c->mlx, c->win, c->img.id, 0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 13:46:22 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 13:57:17 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 14:07:57 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,3 @@ void	fdf_rotate(t_mods *mods, int keycode)
 			(int)(((float)mods->roty / 256) * 360) % 360,
 			(int)(((float)mods->rotz / 256) * 360) % 360);
 }
-
-/*
-** key hooks for modifying the color of the object
-*/
-

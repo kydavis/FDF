@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 12:40:29 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/10 11:55:14 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 16:06:30 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ static void	fdf_mod_matrix(t_canvas *c, char flag)
 		fdf_mx_rot(c, &c->model.obj);
 		fdf_mx_scale_tr(c->model.obj.trans, 3, c->model.obj.mmat, 0);
 	}
-	else
+/*	else
 	{
 		fdf_mx_scale_tr(c->model.cam.trans, 3, c->model.cam.mmat, 0);
 		fdf_mx_rot(c, &c->model.cam);
-	}
+	}*/
 }
 
 /*

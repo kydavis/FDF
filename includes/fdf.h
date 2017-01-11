@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/10 11:49:49 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 18:20:02 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@
 # define N7 89
 # define N9 92
 # define N8 91
+# define N0 82 
+# define SPACE 49
 # define RSHIFT 258
 # define LSHIFT 257
 
@@ -129,7 +131,6 @@ typedef struct s_modifier
 typedef struct	s_model
 {
 	t_mods		obj;
-	t_mods		cam;
 	int			shifth;
 	int			shiftv;
 	int			focal;
@@ -155,6 +156,15 @@ typedef struct	s_vector
 	float		z;
 }				t_vect;
 
+typedef struct	s_line
+{
+	t_pixel		*start;
+	t_pixel		*end;
+	int			dx;
+	int			dy;
+	int			octant;
+}				t_line;
+
 typedef struct	s_map
 {
 	t_node		*loc;
@@ -162,6 +172,7 @@ typedef struct	s_map
 	int			h;
 	int			w;
 	int			bcolor;
+	char		cf;
 }				t_map;
 
 typedef struct s_image
@@ -183,7 +194,6 @@ typedef struct	s_canvas
 	t_model		model;
 	t_image		img;
 	t_map		map;
-	int			octant;
 	int			s_x;
 	int			s_y;
 }				t_canvas;

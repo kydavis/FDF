@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 11:19:57 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/10 12:43:35 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 18:06:59 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,72 @@
 #include <math.h>
 
 /*
-** fdf_get_color retrieves the color for the specified pixel
+** fdf_calculate_tbound is a helper function for clip_coordinates (it calculates
+** the t values for each boundary)
 */
 
-static void	fdf_get_color(t_pixel *cp, t_pixel *start, t_pixel *end)
+static int		fdf_calculate_tbound(float *tbound, int *tdir,
+		t_line *lin, t_canvas *c)
 {
-	int		color;
-	int		sdx;
-	int		edx;
+	int	i;
 
-	sdx = cp->x - start->x;
-	edx = end->x - cp->x;
-	color = (sdx > edx ? end->color : start->color);
-	cp->color = color;
+	if (lin->dx)
+		tbound[0] = -1 * (float)lin->start->x / (float)lin->dx;
+	if (lin->dx)
+		tbound[1] = (float)(c->s_x - lin->start->x) / (float)lin->dx;
+	if (lin->dy)
+		tbound[2] = -1 * (float)lin->start->y / (float)lin->dy;
+	if (lin->dy)
+		tbound[3] = (float)(c->s_y - lin->start->y) / (float)lin->dy;
+	tdir[0] = (-lin->dx < 0 ? 0 : 1);
+	tdir[1] = (lin->dx < 0 ? 0 : 1);
+	tdir[2] = (-lin->dy < 0 ? 0 : 1);
+	tdir[3] = (lin->dy < 0 ? 0 : 1);
+	i = ~0;
+	while (++i < 4 && lin->dx && lin->dy)
+		if (tbound[i] >= tbound[4] && tbound[i] <= tbound[5])
+		{
+			if (!(tdir[i]))
+				tbound[4] = tbound[i];
+			else
+				tbound[5] = tbound[i];
+			return(i);
+		}
+	return (-1);
+}
+
+/*
+** fdf_clip_coordinates clips the coordinate boundaries to ensure that excess
+** processing is not used for "drawing lines" offscreen.
+** Makes use of the parametric equation of a line segment:
+**		(x, y) = (x1, y1) + t * (dx, dy);
+** tbound[0] = Left boundary
+** tbound[1] = Right boundary
+** tbound[2] = Top boundary
+** tbound[3] = Bottom boundary
+** tbound[4] = tmin;
+** tbound[5] = tmax;
+** t[0] = minimum value of t.
+** t[1] = maximum value of t.
+**
+** direction == 0: line is entering
+** direction == 1: line is exiting
+*/
+#include <stdio.h>
+int		fdf_clip_coordinates(t_canvas *c, t_line *lin)
+{
+	float	tbound[6];
+	int		tdir[4];
+	int		border;
+
+	tbound[4] = 0;
+	tbound[5] = 1;
+	border = fdf_calculate_tbound(tbound, tdir, lin, c);
+	lin->end->x = (int)(lin->start->x + (float)lin->dx * tbound[5]);
+	lin->end->y = (int)(lin->start->y + (float)lin->dy * tbound[5]);
+	lin->start->x = (int)(lin->start->x + (float)lin->dx * tbound[4]);
+	lin->start->y = (int)(lin->start->y + (float)lin->dy * tbound[4]);
+	return (1);
 }
 
 /*
@@ -35,19 +88,23 @@ static void	fdf_get_color(t_pixel *cp, t_pixel *start, t_pixel *end)
 ** the color the pixel is supposed to display.
 */
 
-static void	fdf_plot_point(t_canvas *c, t_pixel *cp, t_pixel *sp, t_pixel *ep)
+static void	fdf_plot_point(t_canvas *c, t_pixel *cp, t_line *l)
 {
 	t_pixel	print_pix;
+	int		sdx;
+	int		edx;
 
+	sdx = cp->x - l->start->x;
+	edx = l->end->x - cp->x;
 	print_pix.x = cp->x;
 	print_pix.y = cp->y;
-	fdf_get_color(&print_pix, sp, ep);
+	print_pix.color = (sdx > edx ? l->end->color : l->start->color);
 /*ft_printf("\nBefore swap coordinates (x,y) (%d, %d)", print_pix.x, print_pix.y);*/
-	if (c->octant > 2 && c->octant < 7)
+	if (l->octant > 2 && l->octant < 7)
 		print_pix.x = -cp->x;
-	if (c->octant == 2 || (c->octant > 3 && c->octant != 6))
+	if (l->octant == 2 || (l->octant > 3 && l->octant != 6))
 		print_pix.y = -cp->y;
-	if (c->octant == 1 || c->octant == 2 || c->octant == 5 || c->octant == 6)
+	if (l->octant == 1 || l->octant == 2 || l->octant == 5 || l->octant == 6)
 		ft_xorswapi(&print_pix.x, &print_pix.y);
 /*ft_printf("\nAfter swap coordinates (x,y) (%d, %d)\n", print_pix.x, print_pix.y);*/
 	pixel_to_img(c, &print_pix);
@@ -59,22 +116,22 @@ static void	fdf_plot_point(t_canvas *c, t_pixel *cp, t_pixel *sp, t_pixel *ep)
 ** determining when to move along the vertical axis.
 */
 
-static void		fdf_bress_line(t_pixel *start, t_pixel *end, t_canvas *c)
+static void		fdf_bress_line(t_canvas *c, t_line *line)
 {
 	int		delta_y;
 	int		delta_x;
 	int		error;
 	t_pixel	pix;
 
-	pix.y = start->y;
-	pix.x = start->x;
-	delta_x = end->x - start->x;
-	delta_y = end->y - start->y;
+	pix.y = line->start->y;
+	pix.x = line->start->x;
+	delta_x = line->end->x - line->start->x;
+	delta_y = line->end->y - line->start->y;
 	error = 2 * (delta_y - delta_x);
-	while (pix.x < end->x)
+	while (pix.x < line->end->x)
 	{
 /*		ft_printf("\ncoordinates (x,y) (%d, %d)", pix.x, pix.y);*/
-		fdf_plot_point(c, &pix, start, end);
+		fdf_plot_point(c, &pix, line);
 		if (error > 0)
 		{
 			pix.y++;
@@ -104,62 +161,6 @@ static void	fdf_octant_switch(int oct, t_pixel *cp)
 }
 
 /*
-** fdf_clip_coordinates clips the coordinate boundaries to ensure that excess
-** processing is not used for "drawing lines" offscreen.
-** Makes use of the parametric equation of a line segment:
-**		(x, y) = (x1, y1) + t * (dx, dy);
-** tbound[0] = Left boundary
-** tbound[1] = Right boundary
-** tbound[2] = Top boundary
-** tbound[3] = Bottom boundary
-** t[0] = minimum value of t.
-** t[1] = maximum value of t.
-**
-** direction == 0: line is entering
-** direction == 1: line is exiting
-*/
-
-int		fdf_clip_coordinates(t_pixel *p1, t_pixel *p2, t_canvas *c)
-{
-	float	tbound[4];
-	float	t[2];
-	int		tdir[5];
-	int		dx;
-	int		dy;
-
-	t[0] = 0;
-	t[1] = 1;
-	if ((dx = p2->x - p1->x))
-	{
-		tbound[0] = -1 * (float)p1->x / dx;
-		tdir[0] = (-dx < 0 ? 0 : 1);
-		tbound[1] = (float)(c->s_x - p1->x) / dx;
-		tdir[1] = (dx < 0 ? 0 : 1);
-	}
-	if ((dy = p2->y - p1->y))
-	{
-		tbound[2] = -1 * (float)p1->y / dy;
-		tdir[2] = (-dy < 0 ? 0 : 1);
-		tbound[3] = (float)(c->s_y - p1->y) / dy;
-		tdir[3] = (dy < 0 ? 0 : 1);
-	}
-	tdir[4] = ~0;
-	while (++tdir[4] < 4)
-		if (tbound[tdir[4]] >= t[0] && tbound[tdir[4]] <= t[1])
-		{
-			if (tdir[tdir[4]])
-				t[0] = tbound[tdir[4]];
-			else
-				t[1] = tbound[tdir[4]];
-		}
-	p1->x = (int)(p1->x + dx * t[0]);
-	p1->y = (int)(p1->y + dy * t[0]);
-	p2->x = (int)(p1->x + dx * t[1]);
-	p2->y = (int)(p1->y + dy * t[1]);
-	return (0);
-}
-
-/*
 ** fdf_switch_octant calculates what octant the pixels should be in and adjusts
 ** the coordinates appropriatley.
 ** The higher values of oct indicate
@@ -169,29 +170,29 @@ int		fdf_clip_coordinates(t_pixel *p1, t_pixel *p2, t_canvas *c)
 
 void		fdf_draw_line(t_pixel p1, t_pixel p2, t_canvas *c)
 {
-	int		dcord[2];
+	t_line	line;
 	int		quad;
 
-/*	if (p1.x >= c->s_x || p1.x < 0 || p1.y >= c->s_y || p1.y < 0 ||
-			p2.x >= c->s_x || p2.x < 0 || p2.y >= c->s_y || p2.y < 0)
-		if (!fdf_clip_coordinates(&p1, &p2, c))
-			return ;*/
-	dcord[0] = p2.x - p1.x;
-	if ((dcord[1] = p2.y - p1.y) >= 0)
-		quad = (dcord[0] >= 0 ? 0 : 1);
+	line.dx = p2.x - p1.x;
+	line.start = &p1;
+	line.end = &p2;
+	if ((line.dy = p2.y - p1.y) >= 0)
+		quad = (line.dx >= 0 ? 0 : 1);
 	else
-		quad = (dcord[0] >= 0 ? 3 : 2);
-	dcord[1] = (int)ft_absolute(dcord[1]);
-	dcord[0] = (int)ft_absolute(dcord[0]);
+		quad = (line.dx >= 0 ? 3 : 2);
+	if (!fdf_clip_coordinates(c, &line))
+		return ;
+	line.dy = (int)ft_absolute(line.dy);
+	line.dx = (int)ft_absolute(line.dx);
 	if (quad == 0)
-		c->octant = (dcord[0] > dcord[1] ? 0 : 1);
+		line.octant = (line.dx > line.dy ? 0 : 1);
 	else if (quad == 1)
-		c->octant = (dcord[0] > dcord[1] ? 3 : 2);
+		line.octant = (line.dx > line.dy ? 3 : 2);
 	else if (quad == 2)
-		c->octant = (dcord[0] > dcord[1] ? 4 : 5);
+		line.octant = (line.dx > line.dy ? 4 : 5);
 	else if (quad == 3)
-		c->octant = (dcord[0] > dcord[1] ? 7 : 6);
-	fdf_octant_switch(c->octant, &p1);
-	fdf_octant_switch(c->octant, &p2);
-	fdf_bress_line(&p1, &p2, c);
+		line.octant = (line.dx > line.dy ? 7 : 6);
+	fdf_octant_switch(line.octant, &p1);
+	fdf_octant_switch(line.octant, &p2);
+	fdf_bress_line(c, &line);
 }

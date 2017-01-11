@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:45:47 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/10 11:49:25 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/10 19:49:59 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	hooks(int kc, void *param)
 	if (kc == LA || kc == RA)
 		can->model.shifth += (kc == RA ? can->s_x / 20 : -can->s_x / 20);
 	if (kc == RSHIFT || kc == LSHIFT)
-		can->map.bcolor += 0xF;
+		can->map.bcolor += (kc == LSHIFT ? 1 : -1) * 0x0F0F0F;
 /*	if (kc == UA || kc == DA)
 		can->obj.trans[0] += (kc == UA ? 1 : -1);
 	if (kc == LA || kc == RA)

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/10 11:55:12 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 13:50:55 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int		get_value(char **str, int *nbr)
 	return (1);
 }
 
-static int		fill_row(int w, t_node *row, char *line, int color)
+static int		fill_row(int w, t_node *row, char *line, t_canvas *c)
 {
 	int		i;
 	int		ern;
@@ -44,10 +44,12 @@ static int		fill_row(int w, t_node *row, char *line, int color)
 			line++;
 			if ((ern = get_value(&line, &(row + i)->color)) < 1)
 				return (ern);
+			c->map.cf = 1;
 		}
 		else
-			if(!((row + i)->color = color * (row + i)->z))
-				(row + i)->color = color * 0xFFF;
+			(row + i)->color =((row + i)->z / 10) * 0xA00000 +
+							  (((row + i)->z % 10) * 0xA000 +
+								0x0000FF);
 		while (!(ft_iswhitespace(*line)) && *line)
 			line += 1;
 	}
@@ -60,7 +62,7 @@ static int		fill_row(int w, t_node *row, char *line, int color)
 ** then the color will be specified based on the height of the node.)
 */
 
-static t_node	*fill_map(int fd, int h, int w, int color)
+static t_node	*fill_map(int fd, int h, int w, t_canvas *c)
 {
 	t_node	*map;
 	char	*line;
@@ -74,7 +76,7 @@ static t_node	*fill_map(int fd, int h, int w, int color)
 	while (i < area)
 	{
 		if ((get_next_line(fd, &line)) <= 0 ||
-				(fill_row(w, (map + i), line, color)) < 1)
+				(fill_row(w, (map + i), line, c)) < 1)
 		{
 			ft_memdel((void*)&map);
 			ft_memdel((void*)&line);
@@ -124,7 +126,7 @@ int				get_data(char *file, t_canvas *c)
 		fdf_cleanup(ern, c);
 	if ((fd = open(file, O_RDONLY)) == -1)
 		fdf_cleanup(-1, c);
-	if (!(c->map.loc = fill_map(fd, c->map.h, c->map.w, c->map.bcolor)))
+	if (!(c->map.loc = fill_map(fd, c->map.h, c->map.w, c)))
 		fdf_cleanup(-4, c);
 	if (!(c->map.twd = (t_pixel*)ft_memalloc(sizeof(t_pixel) * c->map.h * c->map.w)))
 		fdf_cleanup(-4, c);

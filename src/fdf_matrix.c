@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 14:48:55 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/10 11:48:46 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 13:34:36 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,20 +84,19 @@ void		fdf_vec_tranf(t_node *vec, t_canvas *c, t_pixel *twd, int ind)
 				lv.z * c->model.obj.mmat[8] + 1 * c->model.obj.mmat[12];
 	tv.y = lv.x * c->model.obj.mmat[1] + lv.y * c->model.obj.mmat[5] +
 				lv.z * c->model.obj.mmat[9] + 1 * c->model.obj.mmat[13];
-	tv.z = lv.x * c->model.obj.mmat[2] + lv.y * c->model.obj.mmat[6] +
+/*	tv.z = lv.x * c->model.obj.mmat[2] + lv.y * c->model.obj.mmat[6] +
 				lv.z * c->model.obj.mmat[10] + 1 * c->model.obj.mmat[14];
-	tv.z = (tv.z < 1 && tv.z > -1 ? 1 : tv.z);
-	twd->x = c->model.focal * tv.x / tv.z + (c->s_x / 2) + c->model.shifth;
-	twd->y = -1 * c->model.focal * tv.y / tv.z + (c->s_y / 2) + c->model.shiftv;
-
+	tv.z = (tv.z < .125 && tv.z > -.125 ? 1 : tv.z);*/
+	twd->x = c->model.focal * tv.x + (c->s_x / 2) + c->model.shifth;
+	twd->y = -1 * c->model.focal * tv.y + (c->s_y / 2) + c->model.shiftv;
+	twd->color = vec->color + (c->map.cf ? c->map.bcolor : 0);
 /*	printf("\nfdf_vec_tranf\n");///
-	printf("tv.x:%f tv.y:%f tv.z:%f \n",tv.x, tv.y, tv.z);
-	printf("lv.x:%f lv.y:%f lv.z:%f \n",lv.x, lv.y, lv.z);
+	printf("tv.x:%f tv.y:%f tv.z:%f \n",tv.x, tv.y, tv.z);*/
+/*	printf("lv.x:%f lv.y:%f lv.z:%f \n",lv.x, lv.y, lv.z);
 	printf("Transformation matrix:\n");
 	print_matrix(c->model.obj.mmat);///
 	printf("twd->x:%d float:%f\n",twd->x, c->model.obj.focal * tv.x / tv.z);///
 	printf("twd->y:%d float:%f\n",twd->y, c->model.obj.focal * tv.y / tv.z);*/
-	twd->color = vec->color;
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/10 11:55:22 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 13:55:57 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,29 +84,22 @@ int		fdf_draw_map(t_canvas *c)
 
 void	fdf_initialize_modifier(t_canvas *c)
 {
-	c->model.obj.scale[0] = 0.015625;
-	c->model.obj.scale[1] = 0.015625;
-	c->model.obj.scale[2] = 0.015625;
+	c->model.obj.scale[0] = .02 / (c->map.w > c->map.h ? c->map.w : c->map.h);
+	c->model.obj.scale[1] = .02 / (c->map.w > c->map.h ? c->map.w : c->map.h);
+	c->model.obj.scale[2] = .02 / (c->map.w > c->map.h ? c->map.w : c->map.h);
 	c->model.obj.trans[0] = 0;
 	c->model.obj.trans[1] = 0;
 	c->model.obj.trans[2] = 0;
-	c->model.obj.rotx = 0;
-	c->model.obj.roty = 0;
-	c->model.obj.rotz = 0;
-	c->model.cam.trans[0] = 0;
-	c->model.cam.trans[1] = 0;
-	c->model.cam.trans[2] = 0;
-	c->model.cam.rotx = 0;
-	c->model.cam.roty = 0;
-	c->model.cam.rotz = 0;
-	c->model.focal = 2400;
+	c->model.obj.rotx = -85;
+	c->model.obj.roty = -85;
+	c->model.obj.rotz = -85;
+	c->model.focal = 48000;
 	c->model.shifth = 0;
 	c->model.shiftv = 0;
 }
 
 void	fdf_initialize_draw(char *file, t_canvas *c)
 {
-	c->map.bcolor = 0xffff;
 	EGUARD(get_data(file, c));
 	fdf_initialize_modifier(c);
 	c->mlx = mlx_init();

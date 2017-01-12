@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:45:47 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 15:43:00 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 16:13:10 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static int	hooks(int kc, void *param)
 
 	i = ~0;
 	can = (t_canvas*)param;
-	ft_printf("kc: %d char?:%c\n", kc, kc);
 	fdf_rotate(&can->model.obj, kc);
 	if (kc == ESC)
 		fdf_cleanup(0, can);

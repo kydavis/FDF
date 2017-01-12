@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 15:12:08 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 15:44:13 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static int		fill_row(int w, t_node *row, char *line, t_canvas *c)
 			c->map.cf = 1;
 		}
 		else
-			(row + i)->color =((row + i)->z / 10) * 0xA00000 +
-							  (((row + i)->z % 10) * 0xA000 +
+			(row + i)->color = ((row + i)->z / 10) * 0xA00000 +
+								(((row + i)->z % 10) * 0xA000 +
 								0x0000FF);
 		while (!(ft_iswhitespace(*line)) && *line)
 			line += 1;
@@ -128,7 +128,7 @@ int				get_data(char *file, t_canvas *c)
 		fdf_cleanup(-1, c);
 	if (!(c->map.loc = fill_map(fd, c->map.h, c->map.w, c)))
 		fdf_cleanup(-4, c);
-	if (!(c->map.twd = 
+	if (!(c->map.twd =
 				(t_pixel*)ft_memalloc(sizeof(t_pixel) * c->map.h * c->map.w)))
 		fdf_cleanup(-4, c);
 	if ((close(fd)) == -1)

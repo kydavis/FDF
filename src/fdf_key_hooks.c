@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 13:46:22 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 14:07:57 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 15:52:58 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	fdf_zoom(float *scl, int keycode, int w, int h)
 		return ;
 	while (i < 3)
 		scl[i++] *= (keycode == PS ? 2 : 0.5);
-	ft_printf("Zoom X%d\n", (int)(maxzoom / *scl));
 }
 
 /*
@@ -81,8 +80,4 @@ void	fdf_rotate(t_mods *mods, int keycode)
 			mods->rotx += (keycode == Q ? 1 : -1);
 	}
 	fdf_setmap(mods, keycode);
-	ft_printf("x rotation:%d°, y rotation:%d°, z rotation:%d°\n",
-			(int)(((float)mods->rotx / 256) * 360) % 360,
-			(int)(((float)mods->roty / 256) * 360) % 360,
-			(int)(((float)mods->rotz / 256) * 360) % 360);
 }

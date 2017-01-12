@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 12:40:29 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/10 16:06:30 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 15:35:43 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ static void	fdf_mod_matrix(t_canvas *c, char flag)
 		fdf_mx_rot(c, &c->model.obj);
 		fdf_mx_scale_tr(c->model.obj.trans, 3, c->model.obj.mmat, 0);
 	}
-/*	else
-	{
-		fdf_mx_scale_tr(c->model.cam.trans, 3, c->model.cam.mmat, 0);
-		fdf_mx_rot(c, &c->model.cam);
-	}*/
 }
 
 /*
@@ -40,7 +35,7 @@ static void	fdf_mod_matrix(t_canvas *c, char flag)
 ** transformed 3d coordinates for each node.
 */
 
-int		fdf_modify_coordinates(t_canvas *c)
+int			fdf_modify_coordinates(t_canvas *c)
 {
 	int	i;
 	int	area;
@@ -50,6 +45,5 @@ int		fdf_modify_coordinates(t_canvas *c)
 	fdf_mod_matrix(c, 0);
 	while (++i < area)
 		fdf_vec_tranf((c->map.loc + i), c, (c->map.twd + i), i);
-/*	fdf_mod_matrix(c, 1);*/
 	return (1);
 }

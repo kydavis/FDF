@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 16:45:47 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 15:08:40 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 15:43:00 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** more instructions
 */
 
-static void	print_inst_cont()
+static void	print_inst_cont(void)
 {
 	ft_putendl("'1':\tinvert x rotation");
 	ft_putendl("'2':\tinvert y rotation");
@@ -34,11 +34,12 @@ static void	print_inst_cont()
 	ft_putendl("lshift:\tcycle colors");
 	ft_putendl("rshift:\tback cycle colors");
 }
+
 /*
 ** Cause I thought it looked cool
 */
 
-static void	print_instructions()
+static void	print_instructions(void)
 {
 	ft_putendl("#############################################################");
 	ft_putendl("##                                                         ##");
@@ -66,7 +67,6 @@ static void	print_instructions()
 	print_inst_cont();
 }
 
-
 /*
 ** Place holder, may evolve into image manipulator dispatcher
 */
@@ -74,7 +74,7 @@ static void	print_instructions()
 static int	hooks(int kc, void *param)
 {
 	t_canvas	*can;
-	int			i;	
+	int			i;
 
 	i = ~0;
 	can = (t_canvas*)param;
@@ -105,7 +105,7 @@ static int	hooks(int kc, void *param)
 **	-Initialize window
 */
 
-int	main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	t_canvas	canv;
 

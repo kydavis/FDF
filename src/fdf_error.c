@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 16:53:36 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/05 17:08:19 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 15:34:35 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	fdf_perror(int en)
 		ft_dprintf(2, "ERRNO:%d Pixel is outside of size specification\n", en);
 	else if (en == -7)
 		ft_dprintf(2, "ERRNO:%d Error closing map\n", en);
-	else///
-		ft_dprintf(2, "ERRNO:%d No errors just closing\n", en);///
 }
 
 /*
@@ -46,7 +44,6 @@ void	fdf_perror(int en)
 
 void	fdf_cleanup(int en, t_canvas *c)
 {
-/*	ft_printf("fdf cleanup\n");*/
 	if (c->img.id && c->mlx)
 		mlx_destroy_image(c->mlx, c->img.id);
 	if (c->win && c->mlx)
@@ -57,15 +54,4 @@ void	fdf_cleanup(int en, t_canvas *c)
 	ft_memdel((void*)&c->costable);
 	fdf_perror(en);
 	exit(en);
-}
-
-/*
-** fdf_freer is a cleanup function that frees allocations made in a function
-** before returning the ern to the parent function.
-*/
-
-int		fdf_freer(int ern, void **str)
-{
-	ft_memdel(str);
-	return (ern);
 }

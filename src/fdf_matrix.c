@@ -6,38 +6,12 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 14:48:55 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 15:07:03 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/11 15:41:58 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fdf.h>
 #include <libft.h>
-
-/*
-** Print matrix is a temporary debugging function
-*/
-#include <stdio.h>///
-void	print_matrix(float *ret)
-{
-	int	i;
-	i = 0;
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f\n", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f\n", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f\n", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f", ret[i++]);
-	printf("%-20.1f\n", ret[i++]);
-}
 
 /*
 ** fdf_mxsquare_mult multiplies two dim X dim matrices m1, m2, and ret must all
@@ -84,19 +58,9 @@ void		fdf_vec_tranf(t_node *vec, t_canvas *c, t_pixel *twd, int ind)
 				lv.z * c->model.obj.mmat[8] + 1 * c->model.obj.mmat[12];
 	tv.y = lv.x * c->model.obj.mmat[1] + lv.y * c->model.obj.mmat[5] +
 				lv.z * c->model.obj.mmat[9] + 1 * c->model.obj.mmat[13];
-/*	tv.z = lv.x * c->model.obj.mmat[2] + lv.y * c->model.obj.mmat[6] +
-				lv.z * c->model.obj.mmat[10] + 1 * c->model.obj.mmat[14];
-	tv.z = (tv.z < .125 && tv.z > -.125 ? 1 : tv.z);*/
 	twd->x = c->model.focal * tv.x + (c->s_x / 2) + c->model.shifth;
 	twd->y = -1 * c->model.focal * tv.y + (c->s_y / 2) + c->model.shiftv;
 	twd->color = vec->color + (c->map.cf ? 0 : c->map.bcolor);
-/*	printf("\nfdf_vec_tranf\n");///
-	printf("tv.x:%f tv.y:%f tv.z:%f \n",tv.x, tv.y, tv.z);*/
-/*	printf("lv.x:%f lv.y:%f lv.z:%f \n",lv.x, lv.y, lv.z);
-	printf("Transformation matrix:\n");
-	print_matrix(c->model.obj.mmat);///
-	printf("twd->x:%d float:%f\n",twd->x, c->model.obj.focal * tv.x / tv.z);///
-	printf("twd->y:%d float:%f\n",twd->y, c->model.obj.focal * tv.y / tv.z);*/
 }
 
 /*
@@ -143,10 +107,6 @@ void		fdf_mx_scale_tr(float *fa, int len, float *ret, char flag)
 	int		modifier;
 	int		i;
 
-/*	printf("\nfdf_mx_scale_tr\n");///
-	printf("Transformation matrix: Before %s\n", (flag ? "scale" : "translate"));///
-	print_matrix(ret);*/
-
 	fdf_mx_id(modm);
 	modifier = (flag ? len + 2 : len * (len + 1));
 	i = -1;
@@ -156,17 +116,10 @@ void		fdf_mx_scale_tr(float *fa, int len, float *ret, char flag)
 	else
 		while (++i < len)
 			modm[modifier + i] = fa[i];
-
-/*	printf("Mod matrix: %s\n", (flag ? "scale" : "translate"));///
-	print_matrix(modm);*/
-
 	fdf_mxsquare_mult(ret, modm, temp, 4);
 	i = -1;
 	while (++i < 16)
 		ret[i] = temp[i];
-
-/*	printf("Transformation matrix: After %s\n", (flag ? "scale" : "translate"));///
-	print_matrix(ret);*/
 }
 
 /*
@@ -206,10 +159,6 @@ void		fdf_mx_rot(t_canvas *c, t_mods *mod)
 	float	temp1[16];
 	float	temp2[16];
 
-/*	printf("\nfdf_mx_rot\n");///
-	printf("Transformation matrix: Before %s\n", "rotation");///
-	print_matrix(c->obj.mmat);*/
-
 	fdf_mx_id(rotx);
 	rotx[5] = COS(mod->rotx);
 	rotx[6] = SIN(mod->rotx);
@@ -228,8 +177,4 @@ void		fdf_mx_rot(t_canvas *c, t_mods *mod)
 	fdf_mxsquare_mult(mod->mmat, roty, temp1, 4);
 	fdf_mxsquare_mult(temp1, rotx, temp2, 4);
 	fdf_mxsquare_mult(temp2, rotz, mod->mmat, 4);
-
-/*	printf("\nfdf_mx_rot\n");///
-	printf("Transformation matrix: After %s\n", "rotation");///
-	print_matrix(c->obj.mmat);*/
 }

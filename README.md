@@ -50,29 +50,31 @@ make
 Window width and window length are optional parameters.
 
 ### Controls:
-* esc:	quit program
-* 'q':	rotate image direction:+1.4 degrees axis: x
-* 'e':	rotate image direction:-1.4 degrees axis: x
-* 'w':	rotate image direction:+1.4 degrees axis: y
-* 's':	rotate image direction:-1.4 degrees axis: y
-* 'd':	rotate image direction:+1.4 degrees axis: z
-* 'a':	rotate image direction:-1.4 degrees axis: z
-* '7':	rotate image direction:+90 degrees axis: x
-* '9':	rotate image direction:-90 degrees axis: x
-* '8':	rotate image direction:+90 degrees axis: y
-* '5':	rotate image direction:-90 degrees axis: y
-* '4':	rotate image direction:+90 degrees axis: z
-* '6':	rotate image direction:-90 degrees axis: z
-* '1':	invert x rotation
-* '2':	invert y rotation
-* '3':	invert z rotation
-* '0':	birds eyes view (rotation on all axis are 0)
-* spc:	isometric view
-*  '<' :	shift  image direction:left
-*  '>' :	shift  image direction:right
-*  '^' :	shift  image direction:up
-*  'v' :	shift  image direction:down
-*  '+' :	zoom in
-*  '-' :	zoom out
-* lshift:	cycle colors
-* rshift:	back cycle colors
+| Key | Description |
+|:-----:|-------------|
+|esc|quit program|
+|q|	rotate image direction: +1.4 degrees axis: x
+|e|	rotate image direction:-1.4 degrees axis: x
+|w|	rotate image direction:+1.4 degrees axis: y
+|s|	rotate image direction:-1.4 degrees axis: y
+|d|	rotate image direction:+1.4 degrees axis: z
+|a|	rotate image direction:-1.4 degrees axis: z
+|7|	rotate image direction:+90 degrees axis: x
+|9|	rotate image direction:-90 degrees axis: x
+|8|	rotate image direction:+90 degrees axis: y
+|5|	rotate image direction:-90 degrees axis: y
+|4|	rotate image direction:+90 degrees axis: z
+|6|	rotate image direction:-90 degrees axis: z
+|1|	invert x rotation
+|2|	invert y rotation
+|3|	invert z rotation
+|0|	birds eyes view (rotation on all axis are 0)
+|space| isometric view
+|←|	shift image direction:left
+|→|	shift image direction:right
+|↑|	shift image direction:up
+|↓|	shift image direction:down
+|+|	zoom in
+|-|	zoom out
+|lshift| cycle colors
+|rshift| back cycle colors

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 17:05:48 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 15:54:46 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/06/17 14:19:04 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	fdf_initialize_draw(char *file, t_canvas *c)
 {
 	int	winscale;
 
-	EGUARD(get_data(file, c));
+	if (!(get_data(file, c)))
+		fdf_cleanup(-4, c);
 	winscale = (c->s_x > 100 ? 5 : 50);
 	c->s_x = (c->s_x ? c->s_x : c->map.w * winscale);
 	winscale = (c->s_y > 100 ? 5 : 50);
@@ -72,11 +73,13 @@ void	fdf_initialize_draw(char *file, t_canvas *c)
 	c->s_x = (c->s_x < 3200 ? c->s_x : 3200);
 	fdf_initialize_modifier(c);
 	c->mlx = mlx_init();
-	EGUARD((c->img.id = mlx_new_image(c->mlx, c->s_x, c->s_y)));
+	if (!(c->img.id = mlx_new_image(c->mlx, c->s_x, c->s_y)))
+		fdf_cleanup(-4, c);
 	c->img.skt = mlx_get_data_addr(c->img.id,
 			&c->img.bpp, &c->img.sl, &c->img.end);
 	fdf_modify_coordinates(c);
 	fdf_draw_map(c);
-	EGUARD((c->win = mlx_new_window(c->mlx, c->s_x, c->s_y, "fdf")));
+	if (!(c->win = mlx_new_window(c->mlx, c->s_x, c->s_y, "fdf")))
+		fdf_cleanup(-4, c);
 	mlx_put_image_to_window(c->mlx, c->win, c->img.id, 0, 0);
 }

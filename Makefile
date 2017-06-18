@@ -6,7 +6,7 @@
 #    By: kdavis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/14 18:48:35 by kdavis            #+#    #+#              #
-#    Updated: 2017/01/11 15:52:20 by kdavis           ###   ########.fr        #
+#    Updated: 2017/06/17 16:38:00 by kdavis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ MAKE		= make
 
 FILENAMES	= fdf_error.c fdf_initalize.c fdf_pixel.c fdf_map_reader.c
 FILENAMES	+=fdf_sinlookup.c fdf_matrix.c fdf_transform.c fdf_draw_line.c
-FILENAMES	+=fdf_key_hooks.c fdf_line_clipping.c main.c
+FILENAMES	+=fdf_key_hooks.c fdf_line_clipping.c main.c print_instructions.c
+FILENAMES	+=fdf_hooks.c
 
 L1			= ft
 L2			= mlx

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 15:59:27 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/06/17 19:16:16 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@
 # define RSHIFT 258
 # define LSHIFT 257
 
-# define EGUARD(X) ((X) ? 0 : fdf_cleanup(-4, c))
 # define SIN(X) c->sintable[ft_absolute((int)X&255)]
 # define COS(X) c->costable[ft_absolute((int)X&255)]
 
@@ -125,6 +124,7 @@ typedef struct	s_canvas
 	t_model		model;
 	t_image		img;
 	t_map		map;
+	char		keys[264];
 	int			s_x;
 	int			s_y;
 }				t_canvas;
@@ -182,7 +182,21 @@ int				fdf_clip_coordinates(t_canvas *c, t_line *lin);
 /*
 ** fdf_key_hooks.c
 */
-void			fdf_zoom(float *scl, int keycode, int w, int h);
-void			fdf_rotate(t_mods *mods, int keycode);
+void			fdf_zoom(float *scl, char *keys, int w, int h);
+void			fdf_rotate(t_mods *mods, char *keys);
+void			fdf_translate(t_canvas *can);
+
+/*
+** print_instructions.c
+*/
+void			print_instructions(void);
+
+/*
+** fdf_hooks.c
+*/
+
+int				kp_hooks(int kc, void *param);
+int				kr_hooks(int kc, void *param);
+int				exit_hook(void *param);
 
 #endif

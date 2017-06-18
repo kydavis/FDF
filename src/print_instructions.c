@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/17 14:47:10 by kdavis            #+#    #+#             */
-/*   Updated: 2017/06/17 19:15:51 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/06/17 19:26:01 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ static void	print_inst_cont(void)
 	ft_putendl("#############################################################");
 	ft_putendl("\nInstructions");
 	ft_putendl("esc:\tquit program");
-	ft_putendl("'q':\trotate image direction:+1.4 degrees axis: x");
-	ft_putendl("'e':\trotate image direction:-1.4 degrees axis: x");
-	ft_putendl("'w':\trotate image direction:+1.4 degrees axis: y");
-	ft_putendl("'s':\trotate image direction:-1.4 degrees axis: y");
-	ft_putendl("'d':\trotate image direction:+1.4 degrees axis: z");
-	ft_putendl("'a':\trotate image direction:-1.4 degrees axis: z");
+	ft_putendl("'q':\trotate the image counterclockwise around the x axis");
+	ft_putendl("'e':\trotate the image clockwise around the x axis");
+	ft_putendl("'w':\trotate the image counterclockwise around the y axis");
+	ft_putendl("'s':\trotate the image clockwise around the y axis");
+	ft_putendl("'d':\trotate the image counterclockwise around the z axis");
+	ft_putendl("'a':\trotate the image clockwise around the z axis");
 	ft_putendl("'7':\trotate image direction:+90 degrees axis: x");
 	ft_putendl("'9':\trotate image direction:-90 degrees axis: x");
 	ft_putendl("'8':\trotate image direction:+90 degrees axis: y");

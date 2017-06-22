@@ -32,7 +32,7 @@ char				*ft_itoa(int n);
 
 unsigned long long	ft_power(unsigned long long nbr, int power);
 
-void				ft_xorswapi(int *a, int *b);
+void				ft_swap(int *a, int *b);
 void				ft_negflag(int *n, int *neg);
 
 #endif

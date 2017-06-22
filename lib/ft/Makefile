@@ -6,7 +6,7 @@
 #    By: kdavis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/09/21 09:50:14 by kdavis            #+#    #+#              #
-#    Updated: 2017/01/03 15:55:59 by kdavis           ###   ########.fr        #
+#    Updated: 2017/06/21 19:58:00 by kdavis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ FT_PRINTF		+=pf_alloc_ret.c pf_funcarray.c pf_str_funcs.c
 
 LEFTOVERS		=ft_new_handle.c
 LEFTOVERS		+=ft_power.c ft_negflag.c 
-LEFTOVERS		+=ft_bitstoa.c ft_putbits.c ft_xorswap.c
+LEFTOVERS		+=ft_bitstoa.c ft_putbits.c ft_swap.c
 
 MATRIX			=ftmx_id.c ftmx_scale.c ftmx_translate.c ftmx_mult.c
 

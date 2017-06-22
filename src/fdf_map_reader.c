@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 13:26:54 by kdavis            #+#    #+#             */
-/*   Updated: 2017/06/22 13:49:45 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/06/22 14:17:56 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,9 @@ static int		get_map_dimensions(char *file, int *h, int *w)
 	}
 	if ((close(fd)) == -1)
 		return (-7);
-	return (ern);
+	if (*h == 0)
+		return (-2);
+	return (0);
 }
 
 int				get_data(char *file, t_canvas *c)

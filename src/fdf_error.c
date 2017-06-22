@@ -28,7 +28,7 @@ void	fdf_perror(int en)
 	else if (en == -3)
 		ft_dprintf(2, "ERRNO:%d Found wrong line length\n", en);
 	else if (en == -4)
-		ft_dprintf(2, "ERRNO:%d Memory allocation failure\n", en);
+		ft_dprintf(2, "ERROR:%d\n", en);
 	else if (en == -5)
 		ft_dprintf(2, "ERRNO:%d Size specifications are too large\n", en);
 	else if (en == -6)

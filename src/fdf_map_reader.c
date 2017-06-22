@@ -20,10 +20,10 @@
 static int		get_value(char **str, int *nbr)
 {
 	long long	temp;
-	int			ern;
 
-	if ((ern = ft_getll_base(str, &temp)) < 1)
-		return (ern);
+	if (ft_getll_base(str, &temp) < 1 || temp > (long long)INT_MAX ||
+		temp < (long long)INT_MIN)
+		return (-1);
 	if (nbr)
 		*nbr = (int)temp;
 	return (1);
@@ -47,8 +47,8 @@ static int		fill_row(int w, t_node *row, char *line, t_canvas *c)
 			c->map.cf = 1;
 		}
 		else
-			(row + i)->color = ((row + i)->z / 10) * 0xA00000 +
-								(((row + i)->z % 10) * 0xA000 +
+			(row + i)->color = ((row + i)->z / 10) * 0xA00000 |
+								(((row + i)->z % 10) * 0xA000 |
 								0x0000FF);
 		while (!(ft_iswhitespace(*line)) && *line)
 			line += 1;

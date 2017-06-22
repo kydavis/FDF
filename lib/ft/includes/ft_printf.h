@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 11:11:33 by kdavis            #+#    #+#             */
-/*   Updated: 2016/12/09 08:15:56 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/06/22 11:30:13 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int						ft_dprintf(int fd, const char *format, ...);
 int						ft_printf(const char *format, ...);
 int						ft_vasprintf(t_strvec *ret, const char *fm, va_list ap);
 int						ft_vdprintf(int fd, const char *format, va_list ap);
+int						ft_asprintf(char **ret, const char *format, ...);
 
 /*
 ** pf_flag_reader:

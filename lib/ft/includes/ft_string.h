@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 09:02:46 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/03 16:06:40 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/01/25 12:18:16 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <string.h>
 # include <ft_io.h>
+# include <ft_vector.h>
 # include <ft_memory.h>
 
 typedef struct	s_strvec

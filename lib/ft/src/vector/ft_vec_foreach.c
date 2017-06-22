@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_swap.c                                          :+:      :+:    :+:   */
+/*   ft_vec_foreach.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/09 09:27:32 by kdavis            #+#    #+#             */
-/*   Updated: 2017/06/21 19:57:47 by kdavis           ###   ########.fr       */
+/*   Created: 2017/04/04 17:21:45 by kdavis            #+#    #+#             */
+/*   Updated: 2017/04/04 17:30:29 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_swap(int *a, int *b)
-{
-	int	temp;
+#include <ft_vector.h>
 
-	temp = *a;
-	*a = *b;
-	*b = temp;
+/*
+** ft_vec_foreach takes in a function pointer and applies that function to
+** every element in the array.
+*/
+
+int	ft_vec_foreach(t_vec *self, int (f)(void*))
+{
+	void	*element;
+	size_t	i;
+
+	i = 0;
+	while ((element = ft_vecindex(self, i)))
+	{
+		if (!f(element))
+			return (0);
+		i++;
+	}
+	return (1);
 }

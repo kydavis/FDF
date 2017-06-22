@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_negflag.c                                       :+:      :+:    :+:   */
+/*   ft_vindex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/10/05 13:10:09 by kdavis            #+#    #+#             */
-/*   Updated: 2016/10/05 13:12:38 by kdavis           ###   ########.fr       */
+/*   Created: 2017/04/04 17:10:19 by kdavis            #+#    #+#             */
+/*   Updated: 2017/04/04 17:17:33 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <ft_vector.h>
 
 /*
-** Flags n as negative or not, as well as changes the value from negative n
-** to positive n.
+** ft_vindex returns the address at the position of the requested index in the
+** array
 */
 
-void	ft_negflag(int *n, int *negative)
+void	*ft_vecindex(t_vec *self, size_t idx)
 {
-	if (*n < 0)
-	{
-		*negative = 1;
-		*n = -*n;
-	}
-	else
-		*negative = 0;
+	if (idx >= self->len)
+		return (NULL);
+	return (self->arr + (idx * self->size));
 }

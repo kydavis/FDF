@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 06:45:34 by kdavis            #+#    #+#             */
-/*   Updated: 2017/06/17 19:16:16 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/06/22 13:52:56 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,8 @@ typedef struct	s_canvas
 	int			s_x;
 	int			s_y;
 }				t_canvas;
+
+void			ft_swap(int *a, int *b);
 
 /*
 ** fdf_sinlookup.c

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/28 11:08:38 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/04 14:56:28 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/04/15 19:06:41 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static ssize_t	parce_buffer(t_list *lst, char *buf, char **line)
 		return (-1);
 	}
 	lst->content = leftover;
-	return (nlen);
+	return (nlen ? nlen : -3);
 }
 
 /*
@@ -73,11 +73,10 @@ static ssize_t	read_line(t_list *lst, size_t o, char **line, ssize_t pflag)
 		{
 			pflag = (ssize_t)ft_strlen((char*)lst->content);
 			*line = ft_strndup((char *)lst->content, pflag);
-			if (**line)
+			ft_memdel(&lst->content);
+			if (**line && (lst->content = ft_memalloc(1)))
 				return (pflag);
-			if (!(*line))
-				return (-1);
-			return (0);
+			return (!(*line) ? -1 : -4);
 		}
 	}
 	return (pflag);
@@ -105,7 +104,7 @@ static ssize_t	search_line(t_list *lst, char **line)
 		if (parce_flag <= 0)
 			ft_memdel(&lst->content);
 	}
-	return (parce_flag);
+	return (parce_flag == -3 ? 0 : parce_flag);
 }
 
 /*
@@ -157,10 +156,10 @@ ssize_t			get_next_line(const int fd, char **line)
 	if (fd < 0 || line == NULL || !(tail = scan_list(&fd_lst, fd)))
 		return (-1);
 	*line = NULL;
-	if (!(sl_flag = search_line(tail, line)))
+	if ((sl_flag = search_line(tail, line)) == -4)
 	{
 		ft_relink_lst(&fd_lst, tail);
-		return (0);
+		return (-2);
 	}
 	if (sl_flag == -1)
 	{

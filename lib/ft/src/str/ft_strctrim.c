@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/14 12:13:30 by kdavis            #+#    #+#             */
-/*   Updated: 2016/10/17 09:19:35 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/04/29 13:02:08 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@
 char	*ft_strctrim(char *str, char c)
 {
 	int		i;
-	int		len;
 	char	*res;
 
 	i = 0;
-	len = 0;
 	while (*str == c)
 		str++;
 	while (str[i])

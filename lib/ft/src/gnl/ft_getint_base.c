@@ -6,12 +6,11 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 13:31:42 by kdavis            #+#    #+#             */
-/*   Updated: 2017/01/11 15:23:11 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/06/12 18:27:15 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_type.h>
-#include <ft_macro.h>
 
 /*
 ** Assign digit converts a char into the appropriate digit for a base conversion

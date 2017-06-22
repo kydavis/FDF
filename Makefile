@@ -6,7 +6,7 @@
 #    By: kdavis <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/14 18:48:35 by kdavis            #+#    #+#              #
-#    Updated: 2017/06/17 16:38:00 by kdavis           ###   ########.fr        #
+#    Updated: 2017/06/19 16:00:27 by kdavis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,9 @@ CC			= gcc
 
 .PHONY: all clean fclean re
 
-all: $(NAME)
+all: $(LIBDIR)$(LIB1).a $(LIBDIR)$(LIB2).a $(NAME)
 
-$(NAME): | $(LIBDIR)$(LIB1).a $(LIBDIR)$(LIB2).a
+$(NAME): $(SRC)
 	$(CC) $(CFLAGS) $(IFLAGS) $(LFLAGS) $(SRC) -o $@
 
 $(LIBDIR)$(LIB1).a:
@@ -60,11 +60,4 @@ fclean: clean
 	rm -rf $(LIBDIR)lib$(L2).a
 	$(MAKE) -C $(LIBDIR)$(L1) fclean
 
-.PHONY: eclean
-eclean:
-	rm -rf $(NAME)
-
 re: fclean all
-
-.PHONY: ere
-ere: eclean all

@@ -6,7 +6,7 @@
 /*   By: kdavis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 13:46:22 by kdavis            #+#    #+#             */
-/*   Updated: 2017/06/17 19:14:35 by kdavis           ###   ########.fr       */
+/*   Updated: 2017/06/22 14:22:46 by kdavis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,12 @@ void	fdf_setmap(t_mods *mods, char *keys)
 	keys[N1] = 0;
 	keys[N2] = 0;
 	keys[N3] = 0;
+	keys[N4] = 0;
+	keys[N5] = 0;
+	keys[N6] = 0;
+	keys[N7] = 0;
+	keys[N8] = 0;
+	keys[N9] = 0;
 }
 
 /*

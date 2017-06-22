@@ -17,6 +17,7 @@
 ** Library included for use of the uint32_t typedef
 */
 # include <math.h>
+# include <limits.h>
 
 # define ESC  53
 # define Q  12
@@ -90,8 +91,8 @@ typedef struct	s_line
 {
 	t_pixel		*start;
 	t_pixel		*end;
-	int			dx;
-	int			dy;
+	long		dx;
+	long		dy;
 	int			octant;
 }				t_line;
 

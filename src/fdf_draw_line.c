@@ -35,7 +35,7 @@ static void	fdf_plot_point(t_canvas *c, t_pixel *cp, t_line *l)
 	if (l->octant == 2 || (l->octant > 3 && l->octant != 6))
 		print_pix.y = -cp->y;
 	if (l->octant == 1 || l->octant == 2 || l->octant == 5 || l->octant == 6)
-		ft_xorswapi(&print_pix.x, &print_pix.y);
+		ft_swap(&print_pix.x, &print_pix.y);
 	pixel_to_img(c, &print_pix);
 }
 
@@ -47,15 +47,15 @@ static void	fdf_plot_point(t_canvas *c, t_pixel *cp, t_line *l)
 
 static void	fdf_bress_line(t_canvas *c, t_line *line)
 {
-	int		delta_y;
-	int		delta_x;
-	int		error;
+	long	delta_y;
+	long	delta_x;
+	long	error;
 	t_pixel	pix;
 
 	pix.y = line->start->y;
 	pix.x = line->start->x;
-	delta_x = line->end->x - line->start->x;
-	delta_y = line->end->y - line->start->y;
+	delta_x = (long)line->end->x - (long)line->start->x;
+	delta_y = (long)line->end->y - (long)line->start->y;
 	error = 2 * (delta_y - delta_x);
 	while (pix.x < line->end->x)
 	{
@@ -81,7 +81,7 @@ static void	fdf_octant_switch(int oct, t_pixel *cp)
 	if (oct > 3)
 		cp->y = -cp->y;
 	if (oct == 1 || oct == 2 || oct == 5 || oct == 6)
-		ft_xorswapi(&cp->x, &cp->y);
+		ft_swap(&cp->x, &cp->y);
 }
 
 /*
@@ -97,17 +97,17 @@ void		fdf_draw_line(t_pixel p1, t_pixel p2, t_canvas *c)
 	t_line	line;
 	int		quad;
 
-	line.dx = p2.x - p1.x;
 	line.start = &p1;
 	line.end = &p2;
-	if ((line.dy = p2.y - p1.y) >= 0)
+	line.dx = (long)p2.x - (long)p1.x;
+	if ((line.dy = (long)p2.y - (long)p1.y) >= 0)
 		quad = (line.dx >= 0 ? 0 : 1);
 	else
 		quad = (line.dx >= 0 ? 3 : 2);
 	if (!fdf_clip_coordinates(c, &line))
 		return ;
-	line.dy = (int)ft_absolute(line.dy);
-	line.dx = (int)ft_absolute(line.dx);
+	line.dy = (long)ft_absolute(line.dy);
+	line.dx = (long)ft_absolute(line.dx);
 	if (quad == 0)
 		line.octant = (line.dx > line.dy ? 0 : 1);
 	else if (quad == 1)
